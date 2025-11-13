@@ -1,9 +1,0 @@
-{
-  "Invoice_Id_c": "INV1001",
-  "Order_Id_c": "ORD2001",
-  "Customer_Id_c": "CUST101",
-  "Invoice_Date_c": "2025-10-25T09:00:00Z",
-  "Tax_c": 180,
-  "Discount_c": 50,
-  "Total_Price_c": 3100
-}

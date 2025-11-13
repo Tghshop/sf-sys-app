@@ -1,7 +1,0 @@
-%dw 2.0
-
-type auto_d09d1fe4_ab22_4c22_ab9e_c2c8ae33e576_Output_Variables_sf = {|
-  object: String, 
-  object_id: String
-|}
-
