@@ -1,0 +1,9 @@
+{
+  "message": "Delivery Partner record updated successfully",
+  "Partner_Id_c": "DP1001",
+  "updatedFields": {
+     "City_c": "Hyderabad",
+  "Contact_c": "9876543210"
+  },
+  "lastUpdated": "2025-10-27T10:15:00Z"
+}

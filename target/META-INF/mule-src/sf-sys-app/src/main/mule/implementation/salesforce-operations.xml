@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:json-logger="http://www.mulesoft.org/schema/mule/json-logger"
+	xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
+http://www.mulesoft.org/schema/mule/json-logger http://www.mulesoft.org/schema/mule/json-logger/current/mule-json-logger.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<sub-flow name="salesfroce-query-sub-flow" doc:id="ad9b5160-420f-42bc-836c-f313d57ac444" >
+		<json-logger:logger doc:name="log-salesfroce-query-sub-flow-start" doc:id="95d88b9f-38a6-4842-8d6a-f97bb89ff962" config-ref="json-logger-config" message='#["--------------" ++ upper("log-salesfroce-query-sub-flow-start") ++ "--------------"]'>
+			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
+		</json-logger:logger>
+		<salesforce:query doc:name="Query" doc:id="9025902f-e14a-48b4-af96-21236286a768" config-ref="salesforce-config">
+			<salesforce:salesforce-query><![CDATA[#[vars.sf.query]]]></salesforce:salesforce-query>
+		</salesforce:query>
+		<ee:transform doc:name="Transform Message" doc:id="d0dd4c46-d3d5-4842-8030-e173d21b3737" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<json-logger:logger doc:name="log-salesfroce-query-sub-flow-end" doc:id="e9e59025-911b-4c73-8313-f578eabf76fd" config-ref="json-logger-config" message='#["--------------" ++ upper("log-salesfroce-query-sub-flow-end") ++ "--------------"]' >
+		</json-logger:logger>
+	</sub-flow>
+	<sub-flow name="salesforce-upsert-sub-flow" doc:id="4f4c9c29-67bf-4f73-a140-2d829e96e588" >
+		<json-logger:logger doc:name="log-salesforce-upsert-sub-flow-start" doc:id="d9e605b6-c8ad-4a28-a7e6-ad266053bc63" config-ref="json-logger-config" message='#["-------------" ++ upper("log-salesforce-upsert-sub-flow-start") ++ "------------"]'>
+			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
+		</json-logger:logger>
+		<salesforce:upsert doc:name="Upsert" doc:id="a94697f6-18dd-4f2f-a362-f5516db4f618" config-ref="salesforce-config" objectType="#[vars.sf.object]" externalIdFieldName="#[vars.sf.object_id]">
+		</salesforce:upsert>
+		<ee:transform doc:name="Transform Message" doc:id="9c199142-da9b-4280-913b-d15d8db7ae88">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<json-logger:logger doc:name="log-salesforce-upsert-sub-flow-end" doc:id="2ed7124b-1c9c-4d91-8037-2dde1421860a" config-ref="json-logger-config" message='#["-------------" ++ upper("log-salesforce-upsert-sub-flow-end") ++ "------------"]' >
+			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
+		</json-logger:logger>
+	
+</sub-flow>
+</mule>

@@ -1,0 +1,22 @@
+[
+  {
+      "Transit_Id_c": "TR1001",
+    "Order_Id_c": "ORD2001",
+    "Partner_Id_c": "DP1001",
+    "Customer_Id_c": "CUST101",
+    "Source_City_c": "Hyderabad",
+    "Destination_City_c": "Bangalore",
+    "Status_c": "In Transit",
+    "Last_Updated_c": "2025-10-27T09:30:00Z"
+  },
+  {
+      "Transit_Id_c": "TR1002",
+    "Order_Id_c": "ORD2002",
+    "Partner_Id_c": "DP1002",
+    "Customer_Id_c": "CUST102",
+    "Source_City_c": "Delhi",
+    "Destination_City_c": "Pune",
+    "Status_c": "Delivered",
+    "Last_Updated_c": "2025-10-26T14:00:00Z"
+  }
+]
