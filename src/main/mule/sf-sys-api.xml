@@ -42,7 +42,7 @@ payload]]></ee:set-payload>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
-""]]></ee:set-payload>
+payload]]></ee:set-payload>
             </ee:message>
         </ee:transform>
         <json-logger:logger doc:name="log-update-inventory-products-end" doc:id="8060a2c1-6da2-440c-a7d4-e24f47f20884" config-ref="json-logger-config" message="#[&quot;---------&quot; ++ upper(&quot;log-update-inventory-products-end&quot;) ++ &quot;---------&quot;]">
