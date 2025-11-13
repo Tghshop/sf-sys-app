@@ -1,0 +1,24 @@
+[
+  {
+    "Order_Id_c": "ORD2001",
+    "Customer_Id_c": "CUST1001",
+    "Product_Id_c": "PROD1001",
+    "Order_Date_c": "2025-10-25T09:00:00Z",
+    "Quantity_c": 2,
+    "Total_Price_c": 110000,
+    "Order_Status_c": "In Transit",
+    "Delivery_Address_c": "Flat 501, Gachibowli, Hyderabad",
+    "Partner_Id_c": "DP1001"
+  },
+  {
+    "Order_Id_c": "ORD2002",
+    "Customer_Id_c": "CUST1002",
+    "Product_Id_c": "PROD1003",
+    "Order_Date_c": "2025-10-26T10:30:00Z",
+    "Quantity_c": 1,
+    "Total_Price_c": 25000,
+    "Order_Status_c": "Delivered",
+    "Delivery_Address_c": "Plot 10, Hitech City, Hyderabad",
+    "Partner_Id_c": "DP1002"
+  }
+]

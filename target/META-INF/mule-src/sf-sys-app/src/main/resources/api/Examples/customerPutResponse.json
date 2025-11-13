@@ -1,0 +1,9 @@
+{
+  "message": "Customer record updated successfully",
+  "Customer_Id_c": "CUST1001",
+  "updatedFields": {
+    "Email_c": "karthik.julakanti@example.com",
+    "Address_c": "Plot 42, Gachibowli, Hyderabad"
+  },
+  "lastUpdated": "2025-10-27T10:15:00Z"
+}

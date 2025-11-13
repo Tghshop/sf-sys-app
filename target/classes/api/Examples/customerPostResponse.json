@@ -1,0 +1,7 @@
+{
+  "message": "Customer record created successfully",
+  "Customer_Id_c": "CUST1001",
+  "Name_c": "Karthik Reddy",
+  "Email_c": "karthik.reddy@example.com",
+  "createdAt": "2025-10-27T11:20:00Z"
+}
