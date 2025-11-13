@@ -1,9 +1,0 @@
-httpListener:
-  port: "8081"
-  read-timeout: "30000"
-  connection-idle-timeout: "40000"
-  
-app:
-  name: "sf-sys-app"
-  version: "v1"
-  
