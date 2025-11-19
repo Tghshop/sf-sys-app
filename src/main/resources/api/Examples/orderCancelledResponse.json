@@ -1,7 +1,0 @@
-{
-  "orderId": "ORD12345",
-  "status": "CANCELLED",
-  "message": "Order has been successfully canceled.",
-  "cancellationReason": "Customer requested cancellation",
-  "canceledAt": "2025-11-05T11:45:00Z"
-}
