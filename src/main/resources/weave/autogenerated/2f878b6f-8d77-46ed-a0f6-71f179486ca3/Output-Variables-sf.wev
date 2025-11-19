@@ -1,0 +1,7 @@
+%dw 2.0
+
+type auto_2f878b6f_8d77_46ed_a0f6_71f179486ca3_Output_Variables_sf = {|
+  object: String, 
+  object_id: String
+|}
+
