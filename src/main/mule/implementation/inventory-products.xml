@@ -19,7 +19,7 @@ vars.requestParams.payload]]></ee:set-payload>
 output application/java
 ---
 {
-	"query": 'SELECT Category__c,Last_Updated__c,price__c,Product_Id__c,Product_Name__c,Stock_Available__c, IsAvailable__c, , Id FROM Inventory__c WHERE IsAvailable__c=true'
+	"query": 'SELECT Category__c,Last_Updated__c,price__c,Product_Id__c,Product_Name__c,Stock_Available__c, IsAvailable__c, Id FROM Inventory__c WHERE IsAvailable__c=true'
 }]]></ee:set-variable>
 			</ee:variables>
 		</ee:transform>
