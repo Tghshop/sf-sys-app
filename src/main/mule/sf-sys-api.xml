@@ -520,7 +520,7 @@ payload]]></ee:set-payload>
 			<json-logger:content><![CDATA[#[payload]]]></json-logger:content>
 		</json-logger:logger>
 		<flow-ref doc:name="set-request-params-sub-flow-reference" doc:id="cbbcb385-ca5e-4b24-a749-76c4389da707" name="set-request-params-sub-flow" target="requestParams" />
-		<flow-ref doc:name="get-customer-details-sub-flow" doc:id="02f296be-1231-4cc0-be7a-abe96d645bf2" name="get-customer-details-sub-flow" />
+		<flow-ref doc:name="get-customer-orders-sub-flow" doc:id="02f296be-1231-4cc0-be7a-abe96d645bf2" name="get-customer-orders-sub-flow" />
 		<ee:transform doc:name="Transform Message">
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
