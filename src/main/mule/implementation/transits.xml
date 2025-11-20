@@ -19,7 +19,7 @@ vars.requestParams.payload]]></ee:set-payload>
 output application/java
 ---
 {
-	"query": 'SELECT Current_City__c,customer__c,DeliveryPartner__c,Delivery_Time__c,Destination_City__c,order__c,Pickup__c,Source_City__c,Status__c,Transit_Id__c FROM Transit__c'
+	"query": 'SELECT Current_City__c,customer__c,DeliveryPartner__c,Delivery_Time__c,Destination_City__c,order__c,Pickup__c,Source_City__c,Status__c,Transit_Id__c, Id FROM Transit__c'
 }]]></ee:set-variable>
 			</ee:variables>
 		</ee:transform>
@@ -43,7 +43,7 @@ vars.requestParams.payload]]></ee:set-payload>
 output application/java
 ---
 {
-	"query": "SELECT Current_City__c,customer__c,DeliveryPartner__c,Delivery_Time__c,Destination_City__c,order__c,Pickup__c,Source_City__c,Status__c,Transit_Id__c FROM Transit__c WHERE Transit_Id__c=" ++ vars.requestParams.uriParams.transitId as String default ""
+	"query": "SELECT Current_City__c,customer__c,DeliveryPartner__c,Delivery_Time__c,Destination_City__c,order__c,Pickup__c,Source_City__c,Status__c,Transit_Id__c, Id FROM Transit__c WHERE Transit_Id__c=" ++ vars.requestParams.uriParams.transitId as String default ""
 }]]></ee:set-variable>
 			</ee:variables>
 		</ee:transform>

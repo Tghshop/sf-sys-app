@@ -19,7 +19,7 @@ vars.requestParams.payload]]></ee:set-payload>
 output application/java
 ---
 {
-	"query": 'SELECT customer__c,Discount__c,Invoice_Date__c,Invoice_Id__c,order__c,Tax__c,Total_Price__c FROM invoice__c'
+	"query": 'SELECT customer__c,Discount__c,Invoice_Date__c,Invoice_Id__c,order__c,Tax__c,Total_Price__c, Id FROM invoice__c'
 }]]></ee:set-variable>
 			</ee:variables>
 		</ee:transform>
@@ -45,7 +45,7 @@ vars.requestParams.payload]]></ee:set-payload>
 output application/java
 ---
 {
-	"query": "SELECT customer__c,Discount__c,Invoice_Date__c,Invoice_Id__c,order__c,Tax__c,Total_Price__c FROM invoice__c WHERE Invoice_Id__c=" ++ vars.requestParams.uriParams.invoiceId as String default ""
+	"query": "SELECT customer__c,Discount__c,Invoice_Date__c,Invoice_Id__c,order__c,Tax__c,Total_Price__c, Id FROM invoice__c WHERE Invoice_Id__c=" ++ vars.requestParams.uriParams.invoiceId as String default ""
 }]]></ee:set-variable>
 			</ee:variables>
 		</ee:transform>
