@@ -35,15 +35,17 @@ output application/java
 		<json-logger:logger doc:name="log-get-customer-details-sub-flow-start" doc:id="810db923-3b73-425d-8ccc-3d72b383327b" config-ref="json-logger-config" message='#["------------" ++ upper("log-get-customer-details-sub-flow-start") ++ "-------------"]'>
 			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
 		</json-logger:logger>
-		<ee:transform doc:name="Transform Message" doc:id="ac5b9af5-c5df-48c1-9507-9e4ccb2c3070" >
-			<ee:message >
-				<ee:set-payload ><![CDATA[%dw 2.0
+		<choice doc:name="Choice" doc:id="03c2278c-f872-4d3d-a861-c0a675dcbd1e" >
+			<when expression='#[vars.requestParams.uriParams.customerId contains "CUST"]'>
+				<ee:transform doc:name="Transform Message" doc:id="ac5b9af5-c5df-48c1-9507-9e4ccb2c3070">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
 vars.requestParams.payload]]></ee:set-payload>
 			</ee:message>
-			<ee:variables >
-				<ee:set-variable variableName="sf" ><![CDATA[%dw 2.0
+			<ee:variables>
+				<ee:set-variable variableName="sf"><![CDATA[%dw 2.0
 output application/java
 ---
 {
@@ -51,6 +53,27 @@ output application/java
 }]]></ee:set-variable>
 			</ee:variables>
 		</ee:transform>
+			</when>
+			<otherwise >
+				<ee:transform doc:name="Transform Message" doc:id="894f28ec-7584-4dfc-a351-5c423f2f12d3" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+{
+}]]></ee:set-payload>
+					</ee:message>
+					<ee:variables >
+						<ee:set-variable variableName="sf" ><![CDATA[%dw 2.0
+output application/java
+---
+{
+	"query": "SELECT Address__c,City__c,contact__c,Customer_Id__c,Email__c,Name__c,Password__c,Pincode__c,Registration_Date__c,State__c, Id FROM customer__c WHERE Id='" ++ vars.requestParams.uriParams.customerId as String default "" ++ "'"
+}]]></ee:set-variable>
+					</ee:variables>
+				</ee:transform>
+			</otherwise>
+		</choice>
 		<flow-ref doc:name="salesfroce-query-sub-flow" doc:id="d89f3877-bc48-4273-9236-6e1e567d74e3" name="salesfroce-query-sub-flow"/>
 		<json-logger:logger doc:name="log-get-customer-details-sub-flow-end" doc:id="d4c74690-6ea5-4290-b6ef-7e05607e6680" config-ref="json-logger-config" message='#["------------" ++ upper("log-get-customer-details-sub-flow-end") ++ "-------------"]' >
 			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
