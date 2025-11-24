@@ -7,20 +7,17 @@ http://www.mulesoft.org/schema/mule/json-logger http://www.mulesoft.org/schema/m
 		<json-logger:logger doc:name="log-get-deliverypartners-data-sub-flow-start" doc:id="8ba61926-64f5-42a2-bb23-240beb978135" config-ref="json-logger-config" message='#["------------" ++ upper("log-get-deliverypartners-data-sub-flow-start") ++ "--------------"]'>
 			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
 		</json-logger:logger>
-		<ee:transform doc:name="Transform Message" doc:id="fc077605-24dc-4ad7-b2cd-8ce221274d7b">
+		<ee:transform doc:name="sf-query" doc:id="fc077605-24dc-4ad7-b2cd-8ce221274d7b">
 			<ee:message>
-				<ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-vars.requestParams.payload]]></ee:set-payload>
 			</ee:message>
 			<ee:variables>
 				<ee:set-variable variableName="sf"><![CDATA[%dw 2.0
 output application/java
 ---
 {
-	"query": 'SELECT Availability_Status__c,City__c,contact__c,Last_Assigned_Time__c,Name__c,Partner_Id__c, Id FROM DeliveryPartner__c WHERE IsActive__c=true'
-}]]></ee:set-variable>
+	"query": 'SELECT City__c,contact__c,Email__c,Id,IsActive__c,Last_Assigned_Time__c,Name__c,Partner_Id__c FROM DeliveryPartner__c WHERE IsActive__c=true'
+}
+]]></ee:set-variable>
 			</ee:variables>
 		</ee:transform>
 		<flow-ref doc:name="salesfroce-query-sub-flow" doc:id="f295dc1c-7cc6-4158-853f-cb54bc64d2b4" name="salesfroce-query-sub-flow"/>
@@ -33,25 +30,39 @@ output application/java
 		<json-logger:logger doc:name="log-get-deliverypartner-byid-sub-flow-start" doc:id="c63e49c7-06fb-4c2a-b3d5-57bd0153a45d" config-ref="json-logger-config" message='#["------------" ++ upper("log-get-deliverypartner-byid-sub-flow-start") ++ "------------"]'>
 			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
 		</json-logger:logger>
-		<ee:transform doc:name="Transform Message" doc:id="ec26431d-c05c-446f-8edd-c2c0649a8a2f">
-			<ee:message>
-				<ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-vars.requestParams.payload]]></ee:set-payload>
-			</ee:message>
-			<ee:variables>
-				<ee:set-variable variableName="sf"><![CDATA[%dw 2.0
+		<choice doc:name="Choice" doc:id="8e6b4dae-67c3-4bac-8bcf-b8a9efe99afd">
+			<when expression='#[vars.requestParams.uriParams.customerId contains "DP"]'>
+				<ee:transform doc:name="Transform Message" doc:id="ebbdb089-0019-4492-ac7f-bd1e1756c591">
+					<ee:message>
+					</ee:message>
+					<ee:variables>
+						<ee:set-variable variableName="sf"><![CDATA[%dw 2.0
 output application/java
 ---
 {
-	"query": "SELECT Availability_Status__c,City__c,contact__c,Last_Assigned_Time__c,Name__c,Partner_Id__c, Id FROM DeliveryPartner__c WHERE Partner_Id__c='" ++ vars.requestParams.uriParams.partnerId as String default "" ++ "'"
+	"query": "SELECT City__c,contact__c,Email__c,Id,IsActive__c,Last_Assigned_Time__c,Name__c,Partner_Id__c FROM DeliveryPartner__c WHERE Partner_Id__c='" ++ vars.requestParams.uriParams.partnerId as String default "" ++ "'"
 }]]></ee:set-variable>
-			</ee:variables>
-		</ee:transform>
+					</ee:variables>
+				</ee:transform>
+			</when>
+			<otherwise>
+				<ee:transform doc:name="Transform Message" doc:id="56de0c76-8b92-4743-87e2-c9b16c6612ef">
+					<ee:message>
+					</ee:message>
+					<ee:variables>
+						<ee:set-variable variableName="sf"><![CDATA[%dw 2.0
+output application/java
+---
+{
+	"query": "SELECT City__c,contact__c,Email__c,Id,IsActive__c,Last_Assigned_Time__c,Name__c,Partner_Id__c FROM DeliveryPartner__c WHERE Id='" ++ vars.requestParams.uriParams.partnerId as String default "" ++ "'"
+}]]></ee:set-variable>
+					</ee:variables>
+				</ee:transform>
+			</otherwise>
+		</choice>
 		<flow-ref doc:name="salesfroce-query-sub-flow" doc:id="132f4523-8a71-4712-8219-66354412b2cb" name="salesfroce-query-sub-flow"/>
-		<json-logger:logger doc:name="log-get-deliverypartner-byid-sub-flow-end" doc:id="d4707adb-f117-45df-b672-3c58a34f6a36" config-ref="json-logger-config" message='#["------------" ++ upper("log-get-deliverypartner-byid-sub-flow-end") ++ "------------"]' >
-			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
+		<json-logger:logger doc:name="log-get-deliverypartner-byid-sub-flow-end" doc:id="d4707adb-f117-45df-b672-3c58a34f6a36" config-ref="json-logger-config" message='#["------------" ++ upper("log-get-deliverypartner-byid-sub-flow-end") ++ "------------"]'>
+			<json-logger:content><![CDATA[#[payload]]]></json-logger:content>
 		</json-logger:logger>
 	
 </sub-flow>
@@ -61,10 +72,6 @@ output application/java
 		</json-logger:logger>
 		<ee:transform doc:name="Transform Message" doc:id="0e37a7e6-8446-403a-addc-158a896169b4">
 			<ee:message>
-				<ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-vars.requestParams.payload]]></ee:set-payload>
 			</ee:message>
 			<ee:variables>
 				<ee:set-variable variableName="sf"><![CDATA[%dw 2.0

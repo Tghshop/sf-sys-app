@@ -76,7 +76,7 @@ output application/json
 }]]></ee:set-variable>
 			</ee:variables>
 		</ee:transform>
-		<flow-ref doc:name="salesforce-upsert-sub-flow" doc:id="12ee526c-6fe5-4429-86d6-9ed839ba465a" name="salesforce-upsert-sub-flow"/>
+		<flow-ref doc:name="invoice-salesforce-insert-sub-flow" doc:id="12ee526c-6fe5-4429-86d6-9ed839ba465a" name="invoice-salesforce-insert-sub-flow"/>
 		<json-logger:logger doc:name="log-post-invoice-record-sub-flow-end" doc:id="aaef1159-ac17-467e-b588-c31267b3de53" config-ref="json-logger-config" message='#["-------------" ++ upper("log-post-invoice-record-sub-flow-end") ++ "---------------"]' >
 			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
 		</json-logger:logger>

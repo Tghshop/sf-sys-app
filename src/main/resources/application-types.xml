@@ -6103,4 +6103,9 @@ type auto_d8688d58_0e03_4635_8c49_101a3c1966ba_Output_Variables_requestParams = 
       </types:output-event>
     </types:processor-declaration>
   </types:enrichment>
+  <types:enrichment select="#fc077605-24dc-4ad7-b2cd-8ce221274d7b"/>
+  <types:enrichment select="#0e37a7e6-8446-403a-addc-158a896169b4"/>
+  <types:enrichment select="#2215d8c9-b3a1-45f6-9dbe-0cb865feb620"/>
+  <types:enrichment select="#ebbdb089-0019-4492-ac7f-bd1e1756c591"/>
+  <types:enrichment select="#56de0c76-8b92-4743-87e2-c9b16c6612ef"/>
 </types:mule>

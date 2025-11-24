@@ -43,4 +43,21 @@ payload]]></ee:set-payload>
 		</json-logger:logger>
 	
 </sub-flow>
+	<sub-flow name="invoice-salesforce-insert-sub-flow" doc:id="2ed90584-7160-4861-b902-48a447159971" >
+		<json-logger:logger doc:name="log-salesforce-upsert-sub-flow-start" doc:id="a770531b-301c-461f-b075-14f1a70bdea3" config-ref="json-logger-config" message='#["-------------" ++ upper("log-salesforce-upsert-sub-flow-start") ++ "------------"]' >
+			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
+		</json-logger:logger>
+		<salesforce:create doc:name="Create" doc:id="3eab61bb-9cde-4aa2-8c13-bb8cef8076da" config-ref="salesforce-config" type="Invoice__c"/>
+		<ee:transform doc:name="Transform Message" doc:id="869bed2d-de75-496e-a40e-2606fd8af5a0" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<json-logger:logger doc:name="log-salesforce-upsert-sub-flow-end" doc:id="0583e2b7-f57c-4f04-9a1c-c47f10bbdc10" config-ref="json-logger-config" message='#["-------------" ++ upper("log-salesforce-upsert-sub-flow-end") ++ "------------"]' >
+			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
+		</json-logger:logger>
+	</sub-flow>
 </mule>
