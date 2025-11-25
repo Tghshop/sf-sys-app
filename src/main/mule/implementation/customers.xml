@@ -10,12 +10,8 @@ http://www.mulesoft.org/schema/mule/json-logger http://www.mulesoft.org/schema/m
 		<json-logger:logger doc:name="log-get-customers-data-sub-flow-start" doc:id="683a70e1-051a-4f5b-9dde-8809f0a00d8f" config-ref="json-logger-config" message='#["-----------" ++ upper("log-get-customers-data-sub-flow-start") ++ "----------"]'>
 			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
 		</json-logger:logger>
-		<ee:transform doc:name="Transform Message" doc:id="fda6eb25-f7ea-46d5-8b9b-059fb49d997f" >
+		<ee:transform doc:name="sf-query" doc:id="fda6eb25-f7ea-46d5-8b9b-059fb49d997f" >
 			<ee:message >
-				<ee:set-payload ><![CDATA[%dw 2.0
-output application/json
----
-payload]]></ee:set-payload>
 			</ee:message>
 			<ee:variables >
 				<ee:set-variable variableName="sf" ><![CDATA[%dw 2.0
@@ -37,7 +33,7 @@ output application/java
 		</json-logger:logger>
 		<choice doc:name="Choice" doc:id="03c2278c-f872-4d3d-a861-c0a675dcbd1e" >
 			<when expression='#[vars.requestParams.uriParams.customerId contains "CUST"]'>
-				<ee:transform doc:name="Transform Message" doc:id="ac5b9af5-c5df-48c1-9507-9e4ccb2c3070">
+				<ee:transform doc:name="sf-query-custId" doc:id="ac5b9af5-c5df-48c1-9507-9e4ccb2c3070">
 			<ee:message>
 				<ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -55,7 +51,7 @@ output application/java
 		</ee:transform>
 			</when>
 			<otherwise >
-				<ee:transform doc:name="Transform Message" doc:id="894f28ec-7584-4dfc-a351-5c423f2f12d3" >
+				<ee:transform doc:name="sf-query-Id" doc:id="894f28ec-7584-4dfc-a351-5c423f2f12d3" >
 					<ee:message >
 						<ee:set-payload ><![CDATA[%dw 2.0
 output application/java
@@ -83,7 +79,7 @@ output application/java
 		<json-logger:logger doc:name="log-post-customer-record-sub-flow-start" doc:id="0c48a5cd-87a7-4b25-a088-5d2b259ac8be" config-ref="json-logger-config" message='#["-----------" ++ upper("log-post-customer-record-sub-flow-start") ++ "---------------"]'>
 			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
 		</json-logger:logger>
-		<ee:transform doc:name="Transform Message" doc:id="6ec1ad8d-5bab-4490-a938-be3972b4c6f1" >
+		<ee:transform doc:name="sf-object-objId" doc:id="6ec1ad8d-5bab-4490-a938-be3972b4c6f1" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
@@ -109,7 +105,7 @@ output application/json
 		<json-logger:logger doc:name="log-put-customer-details-sub-flow-start" doc:id="7fb43969-abb8-4fbc-9301-cac561cb5cb3" config-ref="json-logger-config" message='#["-------------" ++ upper("log-put-customer-details-sub-flow-start") ++ "-----------"]'>
 			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
 		</json-logger:logger>
-		<ee:transform doc:name="Transform Message" doc:id="7ace9052-db30-4600-9fbc-5ec0d1356f65" >
+		<ee:transform doc:name="sf-object-objId" doc:id="7ace9052-db30-4600-9fbc-5ec0d1356f65" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
@@ -136,7 +132,7 @@ output application/json
 			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
 		</json-logger:logger>
 		<flow-ref doc:name="get-customer-details-sub-flow" doc:id="fcdc8ecf-3eb7-46cc-8cc5-2b69cb807183" name="get-customer-details-sub-flow" target="customer"/>
-		<ee:transform doc:name="Transform Message" doc:id="39d2c270-4da6-464b-9124-f410e12abce1" >
+		<ee:transform doc:name="update-flag-payload" doc:id="39d2c270-4da6-464b-9124-f410e12abce1" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
@@ -162,12 +158,8 @@ output application/java
 		<json-logger:logger doc:name="log-get-customer-orders-sub-flow-start" doc:id="78bc2cdb-bb40-4eae-bd40-1d0f3efc5bd7" config-ref="json-logger-config" message='#["------------" ++ upper("log-get-customer-orders-sub-flow-start") ++ "-------------"]' >
 			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
 		</json-logger:logger>
-		<ee:transform doc:name="Transform Message" doc:id="8ddde696-396c-4d34-87fb-35b70ed350bf" >
+		<ee:transform doc:name="sf-orders-query" doc:id="8ddde696-396c-4d34-87fb-35b70ed350bf" >
 			<ee:message >
-				<ee:set-payload ><![CDATA[%dw 2.0
-output application/json
----
-vars.requestParams.payload]]></ee:set-payload>
 			</ee:message>
 			<ee:variables >
 				<ee:set-variable variableName="sf" ><![CDATA[%dw 2.0

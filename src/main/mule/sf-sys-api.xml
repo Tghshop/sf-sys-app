@@ -19,7 +19,7 @@
         </json-logger:logger>
         <flow-ref doc:name="set-request-params-sub-flow-reference" doc:id="96de3e34-7f73-4a09-9445-daeb68807f42" name="set-request-params-sub-flow" target="requestParams" />
         <flow-ref doc:name="put-customer-details-sub-flow" doc:id="17fb0a32-5d77-45a9-8917-9618de861d11" name="put-customer-details-sub-flow" />
-        <ee:transform doc:name="Transform Message">
+        <ee:transform doc:name="response-payload">
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -37,7 +37,7 @@ payload]]></ee:set-payload>
         </json-logger:logger>
         <flow-ref doc:name="set-request-params-sub-flow-reference" doc:id="7b977b13-6495-458a-8899-e5f3926a9894" name="set-request-params-sub-flow" target="requestParams" />
         <flow-ref doc:name="put-inventory-product-details-sub-flow" doc:id="b0126b66-7707-4444-ac38-739964361194" name="put-inventory-product-details-sub-flow" />
-        <ee:transform doc:name="Transform Message">
+        <ee:transform doc:name="response-payload">
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -53,7 +53,7 @@ payload]]></ee:set-payload>
         <json-logger:logger doc:name="log-delete-customer-record-start" doc:id="8fc37227-2dd0-41b2-b9a1-6e3a5139241e" config-ref="json-logger-config" message="#[&quot;-----------&quot; ++ upper(&quot;log-delete-customer-record-start&quot;) ++ &quot;----------&quot;]" />
         <flow-ref doc:name="set-request-params-sub-flow-reference" doc:id="3d8a95ce-2717-42e6-a2ce-05450f4a1341" name="set-request-params-sub-flow" target="requestParams" />
         <flow-ref doc:name="delete-customer-sub-flow" doc:id="6c10c976-7a42-4a45-b0cc-6b60d9258805" name="delete-customer-sub-flow" />
-        <ee:transform doc:name="Transform Message1" doc:id="b541e9c7-043b-428f-b4d8-759de58c62fc">
+        <ee:transform doc:name="response-payload" doc:id="b541e9c7-043b-428f-b4d8-759de58c62fc">
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -89,7 +89,7 @@ payload]]></ee:set-payload>
         </json-logger:logger>
         <flow-ref doc:name="set-request-params-sub-flow-reference" doc:id="9947c19e-82a0-4a15-af65-486ff96c3183" name="set-request-params-sub-flow" target="requestParams" />
         <flow-ref doc:name="patch-order-details-sub-flow" doc:id="d7cc0d67-cf42-4dcf-98a5-e9700c70bd9f" name="patch-order-details-sub-flow" />
-        <ee:transform doc:name="Transform Message">
+        <ee:transform doc:name="response-payload">
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -107,7 +107,7 @@ payload]]></ee:set-payload>
         </json-logger:logger>
         <flow-ref doc:name="set-request-params-sub-flow-reference" doc:id="383ede35-7c8c-4491-b0ff-5643db6b3d4d" name="set-request-params-sub-flow" target="requestParams" />
         <flow-ref doc:name="get-customers-data-sub-flow" doc:id="1aa4ab66-0a90-4866-8c40-6a2f716e45ad" name="get-customers-data-sub-flow" />
-        <ee:transform doc:name="Transform Message">
+        <ee:transform doc:name="response-payload">
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -125,7 +125,7 @@ payload]]></ee:set-payload>
         </json-logger:logger>
         <flow-ref doc:name="set-request-params-sub-flow-reference" doc:id="af37bde8-ba75-423d-a0c4-50c49c28adde" name="set-request-params-sub-flow" target="requestParams" />
         <flow-ref doc:name="get-deliverypartners-data-sub-flow" doc:id="512b2f38-b390-45d1-9bff-d3a6a5dfe210" name="get-deliverypartners-data-sub-flow" />
-        <ee:transform doc:name="Transform Message">
+        <ee:transform doc:name="response-payload">
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -143,7 +143,7 @@ payload]]></ee:set-payload>
         </json-logger:logger>
         <flow-ref doc:name="set-request-params-sub-flow-reference" doc:id="d524da47-48b3-476d-b807-a1f45cb79c6a" name="set-request-params-sub-flow" target="requestParams" />
         <flow-ref doc:name="get-inventory-products-data-sub-flow" doc:id="eee87f38-a28c-43ac-afab-61ef5dcc208b" name="get-inventory-products-data-sub-flow" />
-        <ee:transform doc:name="Transform Message">
+        <ee:transform doc:name="response-payload">
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -161,7 +161,7 @@ payload]]></ee:set-payload>
         </json-logger:logger>
         <flow-ref doc:name="set-request-params-sub-flow-reference" doc:id="4b8ac073-a0ed-4f0b-844c-823e277ec855" name="set-request-params-sub-flow" target="requestParams" />
         <flow-ref doc:name="get-invoices-data-sub-flow" doc:id="5575b5a5-efed-4ba5-97fe-d09d5f93c5a3" name="get-invoices-data-sub-flow" />
-        <ee:transform doc:name="Transform Message">
+        <ee:transform doc:name="response-payload">
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -179,7 +179,7 @@ payload]]></ee:set-payload>
         </json-logger:logger>
         <flow-ref doc:name="set-request-params-sub-flow-reference" doc:id="3f157efe-12ff-40d0-b319-f1b28981b771" name="set-request-params-sub-flow" target="requestParams" />
         <flow-ref doc:name="get-deliverypartner-byid-sub-flow" doc:id="2689eb03-ee83-433e-94eb-e75edf0d0874" name="get-deliverypartner-byid-sub-flow" />
-        <ee:transform doc:name="Transform Message">
+        <ee:transform doc:name="response-payload">
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -197,7 +197,7 @@ payload]]></ee:set-payload>
         </json-logger:logger>
         <flow-ref doc:name="set-request-params-sub-flow-reference" doc:id="1576926f-92e8-43ff-aee2-23c2299bbfbb" name="set-request-params-sub-flow" target="requestParams" />
         <flow-ref doc:name="get-orders-data-sub-flow" doc:id="9a3eb57c-06e2-4b11-b6f0-72d674016033" name="get-orders-data-sub-flow" />
-        <ee:transform doc:name="Transform Message">
+        <ee:transform doc:name="response-payload">
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -215,7 +215,7 @@ payload]]></ee:set-payload>
         </json-logger:logger>
         <flow-ref doc:name="set-request-params-sub-flow-reference" doc:id="3ab6ea25-e569-484c-a961-32d059ebed5c" name="set-request-params-sub-flow" target="requestParams" />
         <flow-ref doc:name="get-transits-data-sub-flow" doc:id="fe020729-4871-4c76-8b67-50aaede31d23" name="get-transits-data-sub-flow" />
-        <ee:transform doc:name="Transform Message">
+        <ee:transform doc:name="response-payload">
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -233,7 +233,7 @@ payload]]></ee:set-payload>
         </json-logger:logger>
         <flow-ref doc:name="set-request-params-sub-flow-reference" doc:id="e7ae4e4d-8dd5-4531-8d6c-445fc1124a77" name="set-request-params-sub-flow" target="requestParams" />
         <flow-ref doc:name="get-transits-data-sub-flow" doc:id="2eb22b9c-4c78-4942-8dc2-bea8813cca67" name="get-customer-details-sub-flow" />
-        <ee:transform doc:name="Transform Message">
+        <ee:transform doc:name="response-payload">
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -251,7 +251,7 @@ payload]]></ee:set-payload>
         </json-logger:logger>
         <flow-ref doc:name="set-request-params-sub-flow-reference" doc:id="d1e8cb36-072d-485a-9ca9-08fd7e2ef9f7" name="set-request-params-sub-flow" target="requestParams" />
         <flow-ref doc:name="get-invoice-byid-sub-flow" doc:id="69465c6b-ff97-46c0-a601-286bd323dbf0" name="get-invoice-byid-sub-flow" />
-        <ee:transform doc:name="Transform Message">
+        <ee:transform doc:name="response-payload">
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -269,7 +269,7 @@ payload]]></ee:set-payload>
         </json-logger:logger>
         <flow-ref doc:name="set-request-params-sub-flow-reference" doc:id="f8183543-043d-442e-9b65-aa608d581f55" name="set-request-params-sub-flow" target="requestParams" />
         <flow-ref doc:name="get-order-byid-sub-flow" doc:id="16aca1fc-91fc-4bbd-91c9-240b217d3b59" name="get-order-byid-sub-flow" />
-        <ee:transform doc:name="Transform Message">
+        <ee:transform doc:name="response-payload">
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -287,7 +287,7 @@ payload]]></ee:set-payload>
         </json-logger:logger>
         <flow-ref doc:name="set-request-params-sub-flow-reference" doc:id="d1202d19-6647-475c-a06d-e5cd6bfa4279" name="set-request-params-sub-flow" target="requestParams" />
         <flow-ref doc:name="get-deliverypartner-byid-sub-flow" doc:id="5f409289-cddc-4b60-93f6-ff003a59f734" name="get-deliverypartner-byid-sub-flow" />
-        <ee:transform doc:name="Transform Message">
+        <ee:transform doc:name="response-payload">
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -305,7 +305,7 @@ payload]]></ee:set-payload>
         </json-logger:logger>
         <flow-ref doc:name="set-request-params-sub-flow-reference" doc:id="49966b77-2e9d-49c9-8975-a93a819845ac" name="set-request-params-sub-flow" target="requestParams" />
         <flow-ref doc:name="get-inventory-productbyid-sub-flow" doc:id="45f62874-0f82-4faa-bffb-18c11979b26f" name="get-inventory-productbyid-sub-flow" />
-        <ee:transform doc:name="Transform Message">
+        <ee:transform doc:name="response-payload">
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -323,7 +323,7 @@ payload]]></ee:set-payload>
         </json-logger:logger>
         <flow-ref doc:name="set-request-params-sub-flow-reference" doc:id="8822b31e-ca1d-467d-b211-6bf03fa14df5" name="set-request-params-sub-flow" target="requestParams" />
         <flow-ref doc:name="get-transit-byid-sub-flow" doc:id="e1cb72c6-6e67-494b-8993-6360a02607d5" name="get-transit-byid-sub-flow" />
-        <ee:transform doc:name="Transform Message">
+        <ee:transform doc:name="response-payload">
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -341,7 +341,7 @@ payload]]></ee:set-payload>
         </json-logger:logger>
         <flow-ref doc:name="set-request-params-sub-flow-reference" doc:id="c06778d3-e663-4c17-ba6a-123ae5f7c949" name="set-request-params-sub-flow" target="requestParams" />
         <flow-ref doc:name="post-customer-record-sub-flow" doc:id="94dfa96d-b4ba-4320-aa98-039b9d3d76c9" name="post-customer-record-sub-flow" />
-        <ee:transform doc:name="Transform Message">
+        <ee:transform doc:name="response-payload">
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -359,7 +359,7 @@ payload]]></ee:set-payload>
         </json-logger:logger>
         <flow-ref doc:name="set-request-params-sub-flow-reference" doc:id="65ce4731-5c34-4f09-a60a-c802fa741c80" name="set-request-params-sub-flow" target="requestParams" />
         <flow-ref doc:name="post-inventory-product-record-sub-flow" doc:id="4d2f9705-2564-4bbc-af2c-5fbf6da7d89a" name="post-inventory-product-record-sub-flow" />
-        <ee:transform doc:name="Transform Message">
+        <ee:transform doc:name="response-payload">
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -377,7 +377,7 @@ payload]]></ee:set-payload>
         </json-logger:logger>
         <flow-ref doc:name="set-request-params-sub-flow-reference" doc:id="db9562c0-3c88-48ce-be05-5f9e5173fdc5" name="set-request-params-sub-flow" target="requestParams" />
         <flow-ref doc:name="post-invoice-record-sub-flow" doc:id="c8588e2b-1ab7-49b6-b074-e2fadafc8c4d" name="post-invoice-record-sub-flow" />
-        <ee:transform doc:name="Transform Message">
+        <ee:transform doc:name="response-payload">
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -395,7 +395,7 @@ payload]]></ee:set-payload>
         </json-logger:logger>
         <flow-ref doc:name="set-request-params-sub-flow-reference" doc:id="f8c7ccc0-33c8-4c07-8c17-1b00e9b49daf" name="set-request-params-sub-flow" target="requestParams" />
         <flow-ref doc:name="post-order-record-sub-flow" doc:id="ba6e2bbc-02cd-4545-9946-f5ea2b4ed9a5" name="post-order-record-sub-flow" />
-        <ee:transform doc:name="Transform Message">
+        <ee:transform doc:name="response-payload">
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -413,7 +413,7 @@ payload]]></ee:set-payload>
         </json-logger:logger>
         <flow-ref doc:name="set-request-params-sub-flow-reference" doc:id="e621c92c-6c3f-4469-afc7-5ee3a56df23c" name="set-request-params-sub-flow" target="requestParams" />
         <flow-ref doc:name="post-transit-record-sub-flow" doc:id="4b81df28-57ed-4216-9eb8-aed2f79dc677" name="post-transit-record-sub-flow" />
-        <ee:transform doc:name="Transform Message">
+        <ee:transform doc:name="response-payload">
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -431,7 +431,7 @@ payload]]></ee:set-payload>
 		</json-logger:logger>
 		<flow-ref doc:name="set-request-params-sub-flow-reference" doc:id="201da511-9a30-4fab-ae6a-5c60acbce40d" name="set-request-params-sub-flow" target="requestParams" />
 		<flow-ref doc:name="put-deliverypartner-sub-flow" doc:id="1565dc28-e9b5-4572-b407-2409980aa8f3" name="put-deliverypartner-sub-flow" />
-        <ee:transform doc:name="Transform Message">
+        <ee:transform doc:name="response-payload">
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -449,7 +449,7 @@ payload]]></ee:set-payload>
 		</json-logger:logger>
 		<flow-ref doc:name="set-request-params-sub-flow-reference" doc:id="c5be8de4-73e5-4b0b-a9e1-a84512242494" name="set-request-params-sub-flow" target="requestParams" />
 		<flow-ref doc:name="delete-customer-sub-flow" doc:id="5de01b27-312b-41ff-93bf-80aeea00d97c" name="delete-customer-sub-flow" />
-        <ee:transform doc:name="Transform Message">
+        <ee:transform doc:name="response-payload">
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -467,7 +467,7 @@ payload]]></ee:set-payload>
 		</json-logger:logger>
 		<flow-ref doc:name="set-request-params-sub-flow-reference" doc:id="5b71d469-64dc-477a-8342-e0313e6fc34c" name="set-request-params-sub-flow" target="requestParams" />
 		<flow-ref doc:name="delete-order-sub-flow" doc:id="e89be4e5-cf2b-4562-95a3-c97360acbdf0" name="delete-order-sub-flow" />
-        <ee:transform doc:name="Transform Message">
+        <ee:transform doc:name="response-payload">
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -485,7 +485,7 @@ payload]]></ee:set-payload>
 		</json-logger:logger>
 		<flow-ref doc:name="set-request-params-sub-flow-reference" doc:id="50a2ed26-6fa7-4f08-bccf-e618c086bef5" name="set-request-params-sub-flow" target="requestParams" />
 		<flow-ref doc:name="delete-deliverypartner-sub-flow" doc:id="18be8516-a328-4130-acb5-67543e6bf342" name="delete-deliverypartner-sub-flow" />
-		<ee:transform doc:name="Transform Message1" doc:id="dd213c39-e47a-4d29-ba44-d8dad63616ab">
+		<ee:transform doc:name="response-payload" doc:id="dd213c39-e47a-4d29-ba44-d8dad63616ab">
 			<ee:message>
 				<ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -503,7 +503,7 @@ payload]]></ee:set-payload>
 		</json-logger:logger>
 		<flow-ref doc:name="set-request-params-sub-flow-reference" doc:id="29295be1-820e-4c3b-a5f7-8640622670c4" name="set-request-params-sub-flow" target="requestParams" />
 		<flow-ref doc:name="patch-transit-record-sub-flow" doc:id="9694e616-c001-4ad4-9824-a9e867a7503f" name="patch-transit-record-sub-flow" />
-        <ee:transform doc:name="Transform Message">
+        <ee:transform doc:name="response-payload">
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -521,7 +521,7 @@ payload]]></ee:set-payload>
 		</json-logger:logger>
 		<flow-ref doc:name="set-request-params-sub-flow-reference" doc:id="cbbcb385-ca5e-4b24-a749-76c4389da707" name="set-request-params-sub-flow" target="requestParams" />
 		<flow-ref doc:name="get-customer-orders-sub-flow" doc:id="02f296be-1231-4cc0-be7a-abe96d645bf2" name="get-customer-orders-sub-flow" />
-		<ee:transform doc:name="Transform Message">
+		<ee:transform doc:name="response-payload">
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -539,7 +539,7 @@ payload]]></ee:set-payload>
 		</json-logger:logger>
 		<flow-ref doc:name="set-request-params-sub-flow-reference" doc:id="ed921a64-08fe-4058-95ed-2a46591197e0" name="set-request-params-sub-flow" target="requestParams" />
 		<flow-ref doc:name="post-deliverypartner-sub-flow" doc:id="3863ab0e-9d65-47a1-8630-a9cc5a56d5aa" name="post-deliverypartner-sub-flow" />
-		<ee:transform doc:name="Transform Message">
+		<ee:transform doc:name="response-payload">
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json

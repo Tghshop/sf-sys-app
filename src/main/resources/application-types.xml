@@ -6105,7 +6105,16 @@ type auto_d8688d58_0e03_4635_8c49_101a3c1966ba_Output_Variables_requestParams = 
   </types:enrichment>
   <types:enrichment select="#fc077605-24dc-4ad7-b2cd-8ce221274d7b"/>
   <types:enrichment select="#0e37a7e6-8446-403a-addc-158a896169b4"/>
-  <types:enrichment select="#2215d8c9-b3a1-45f6-9dbe-0cb865feb620"/>
   <types:enrichment select="#ebbdb089-0019-4492-ac7f-bd1e1756c591"/>
   <types:enrichment select="#56de0c76-8b92-4743-87e2-c9b16c6612ef"/>
+  <types:enrichment select="#0cfa0286-0f75-4eb2-bee1-396ec22790e0"/>
+  <types:enrichment select="#fda6eb25-f7ea-46d5-8b9b-059fb49d997f"/>
+  <types:enrichment select="#8ddde696-396c-4d34-87fb-35b70ed350bf"/>
+  <types:enrichment select="#638320de-9c2f-4cef-a1a0-39f22de36dca"/>
+  <types:enrichment select="#52b0f4fb-0d78-4dc0-bbfb-cab449d7457d"/>
+  <types:enrichment select="#f7072a08-531b-4c30-b831-d15d876a9aa6"/>
+  <types:enrichment select="#9661fd7b-d70d-4ae8-87d9-7ce011b9d158"/>
+  <types:enrichment select="#0b49e065-1af1-42d2-a2a1-e179261448af"/>
+  <types:enrichment select="#9ec73c6a-6583-40d0-bb7b-739a4c4874f8"/>
+  <types:enrichment select="#0017abda-6de3-405c-a4d7-f1e36ee1581b"/>
 </types:mule>

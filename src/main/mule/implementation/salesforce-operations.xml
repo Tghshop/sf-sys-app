@@ -13,7 +13,7 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 		<salesforce:query doc:name="Query" doc:id="9025902f-e14a-48b4-af96-21236286a768" config-ref="salesforce-config">
 			<salesforce:salesforce-query><![CDATA[#[vars.sf.query]]]></salesforce:salesforce-query>
 		</salesforce:query>
-		<ee:transform doc:name="Transform Message" doc:id="d0dd4c46-d3d5-4842-8030-e173d21b3737" >
+		<ee:transform doc:name="salesforce-response" doc:id="d0dd4c46-d3d5-4842-8030-e173d21b3737" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
@@ -30,7 +30,7 @@ payload]]></ee:set-payload>
 		</json-logger:logger>
 		<salesforce:upsert doc:name="Upsert" doc:id="a94697f6-18dd-4f2f-a362-f5516db4f618" config-ref="salesforce-config" objectType="#[vars.sf.object]" externalIdFieldName="#[vars.sf.object_id]">
 		</salesforce:upsert>
-		<ee:transform doc:name="Transform Message" doc:id="9c199142-da9b-4280-913b-d15d8db7ae88">
+		<ee:transform doc:name="salesforce-response" doc:id="9c199142-da9b-4280-913b-d15d8db7ae88">
 			<ee:message>
 				<ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -48,7 +48,7 @@ payload]]></ee:set-payload>
 			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
 		</json-logger:logger>
 		<salesforce:create doc:name="Create" doc:id="3eab61bb-9cde-4aa2-8c13-bb8cef8076da" config-ref="salesforce-config" type="Invoice__c"/>
-		<ee:transform doc:name="Transform Message" doc:id="869bed2d-de75-496e-a40e-2606fd8af5a0" >
+		<ee:transform doc:name="salesforce-response" doc:id="869bed2d-de75-496e-a40e-2606fd8af5a0" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/json

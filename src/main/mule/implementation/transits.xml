@@ -7,19 +7,15 @@ http://www.mulesoft.org/schema/mule/json-logger http://www.mulesoft.org/schema/m
 		<json-logger:logger doc:name="log-get-transits-data-sub-flow-start" doc:id="af54b8f6-1eca-4966-bf76-ef80fe4c2a07" config-ref="json-logger-config" message='#["---------------" ++ upper("log-get-transits-data-sub-flow-start") ++ "---------------"]'>
 			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
 		</json-logger:logger>
-		<ee:transform doc:name="Transform Message" doc:id="9661fd7b-d70d-4ae8-87d9-7ce011b9d158">
+		<ee:transform doc:name="sf-query" doc:id="9661fd7b-d70d-4ae8-87d9-7ce011b9d158">
 			<ee:message>
-				<ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-vars.requestParams.payload]]></ee:set-payload>
 			</ee:message>
 			<ee:variables>
 				<ee:set-variable variableName="sf"><![CDATA[%dw 2.0
 output application/java
 ---
 {
-	"query": 'SELECT Current_City__c,customer__c,DeliveryPartner__c,Delivery_Time__c,Destination_City__c,order__c,Pickup__c,Source_City__c,Status__c,Transit_Id__c, Id FROM Transit__c'
+	"query": 'SELECT Current_City__c,customer__c,DeliveryPartner__c,Delivery_Time__c,Destination_City__c,Id,order__c,Source_City__c,Transit_Id__c FROM Transit__c'
 }]]></ee:set-variable>
 			</ee:variables>
 		</ee:transform>
@@ -31,19 +27,15 @@ output application/java
 </sub-flow>
 	<sub-flow name="get-transit-byid-sub-flow" doc:id="91595d10-a079-40bc-bf81-2ef9a163a1c1">
 		<json-logger:logger doc:name="log-get-transit-byid-sub-flow-start" doc:id="f8aa75b2-c31a-4ebb-b162-d0abec0b82fe" config-ref="json-logger-config" message='#["------------" ++ upper("log-get-transit-byid-sub-flow-start") ++ "---------------"]'/>
-		<ee:transform doc:name="Transform Message" doc:id="0cfa0286-0f75-4eb2-bee1-396ec22790e0">
+		<ee:transform doc:name="sf-query-transitId" doc:id="0cfa0286-0f75-4eb2-bee1-396ec22790e0">
 			<ee:message>
-				<ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-vars.requestParams.payload]]></ee:set-payload>
 			</ee:message>
 			<ee:variables>
 				<ee:set-variable variableName="sf"><![CDATA[%dw 2.0
 output application/java
 ---
 {
-	"query": "SELECT Current_City__c,customer__c,DeliveryPartner__c,Delivery_Time__c,Destination_City__c,order__c,Pickup__c,Source_City__c,Status__c,Transit_Id__c, Id FROM Transit__c WHERE Transit_Id__c='" ++ vars.requestParams.uriParams.transitId as String default "" ++ "'"
+	"query": "SELECT Current_City__c,customer__c,DeliveryPartner__c,Delivery_Time__c,Destination_City__c,Id,order__c,Source_City__c,Transit_Id__c FROM Transit__c WHERE Transit_Id__c='" ++ vars.requestParams.uriParams.transitId as String default "" ++ "'"
 }]]></ee:set-variable>
 			</ee:variables>
 		</ee:transform>
@@ -57,7 +49,7 @@ output application/java
 		<json-logger:logger doc:name="log-post-transit-record-sub-flow-start" doc:id="e894aa2c-0b5f-4615-b101-786ca74dfc20" config-ref="json-logger-config" message='#["----------" ++ upper("log-post-transit-record-sub-flow-start") ++ "-------------"]'>
 			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
 		</json-logger:logger>
-		<ee:transform doc:name="Transform Message" doc:id="50ec2c05-3278-45bf-bc96-3acea9a9999d">
+		<ee:transform doc:name="sf-object-objId" doc:id="50ec2c05-3278-45bf-bc96-3acea9a9999d">
 			<ee:message>
 				<ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -84,7 +76,7 @@ output application/json
 		<json-logger:logger doc:name="log-patch-transit-record-sub-flow-start" doc:id="2fd8e79e-2b1b-4789-a2e5-f8ae8bc4c3f2" config-ref="json-logger-config" message='#["----------" ++ upper("log-patch-transit-record-sub-flow-start") ++ "-------------"]' >
 			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
 		</json-logger:logger>
-		<ee:transform doc:name="Transform Message" doc:id="232f3c1a-109a-42aa-a466-abb759f8e78b" >
+		<ee:transform doc:name="sf-object-objId" doc:id="232f3c1a-109a-42aa-a466-abb759f8e78b" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/json

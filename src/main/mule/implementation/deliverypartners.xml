@@ -31,8 +31,8 @@ output application/java
 			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
 		</json-logger:logger>
 		<choice doc:name="Choice" doc:id="8e6b4dae-67c3-4bac-8bcf-b8a9efe99afd">
-			<when expression='#[vars.requestParams.uriParams.customerId contains "DP"]'>
-				<ee:transform doc:name="Transform Message" doc:id="ebbdb089-0019-4492-ac7f-bd1e1756c591">
+			<when expression='#[vars.requestParams.uriParams.partnerId contains "DP"]'>
+				<ee:transform doc:name="sf-query-partnerId" doc:id="ebbdb089-0019-4492-ac7f-bd1e1756c591">
 					<ee:message>
 					</ee:message>
 					<ee:variables>
@@ -46,7 +46,7 @@ output application/java
 				</ee:transform>
 			</when>
 			<otherwise>
-				<ee:transform doc:name="Transform Message" doc:id="56de0c76-8b92-4743-87e2-c9b16c6612ef">
+				<ee:transform doc:name="sf-query-Id" doc:id="56de0c76-8b92-4743-87e2-c9b16c6612ef">
 					<ee:message>
 					</ee:message>
 					<ee:variables>
@@ -70,7 +70,7 @@ output application/java
 		<json-logger:logger doc:name="log-get-orders-partnerbyid-sub-flow-start" doc:id="a24a1718-afe5-45f0-8528-e918a1a49808" config-ref="json-logger-config" message='#["-----------" ++ upper("log-get-orders-partnerbyid-sub-flow-start") ++ "-------------"]'>
 			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
 		</json-logger:logger>
-		<ee:transform doc:name="Transform Message" doc:id="0e37a7e6-8446-403a-addc-158a896169b4">
+		<ee:transform doc:name="sf-orders-query" doc:id="0e37a7e6-8446-403a-addc-158a896169b4">
 			<ee:message>
 			</ee:message>
 			<ee:variables>
@@ -92,7 +92,7 @@ output application/java
 		<json-logger:logger doc:name="log-post-deliverypartner-sub-flow-start" doc:id="82b1f8a1-435b-4332-ac23-9e2692c96fa1" config-ref="json-logger-config" message='#["-----------" ++ upper("log-post-deliverypartner-sub-flow-start") ++ "-------------"]' >
 			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
 		</json-logger:logger>
-		<ee:transform doc:name="Transform Message" doc:id="74120755-2433-4377-8a5f-c837a9a637b6" >
+		<ee:transform doc:name="sf-object-objId" doc:id="74120755-2433-4377-8a5f-c837a9a637b6" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
@@ -118,7 +118,7 @@ output application/json
 		<json-logger:logger doc:name="log-put-deliverypartner-sub-flow-start" doc:id="8261d7f2-5e30-4c3a-be21-3423494e949d" config-ref="json-logger-config" message='#["-----------" ++ upper("log-put-deliverypartner-sub-flow-start") ++ "-------------"]' >
 			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
 		</json-logger:logger>
-		<ee:transform doc:name="Transform Message" doc:id="d3efbfdd-72fb-473a-a618-07633bb7f62e" >
+		<ee:transform doc:name="sf-object-objId" doc:id="d3efbfdd-72fb-473a-a618-07633bb7f62e" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
@@ -145,7 +145,7 @@ output application/json
 			<json-logger:content><![CDATA[#[payload]]]></json-logger:content>
 		</json-logger:logger>
 		<flow-ref doc:name="get-deliverypartner-byid-sub-flow" doc:id="560422fa-3868-4952-9c9f-b34efee702c0" name="get-deliverypartner-byid-sub-flow" target="deliverypartner"/>
-		<ee:transform doc:name="Transform Message" doc:id="20e259f0-c154-4b19-997c-4cf9d8103242">
+		<ee:transform doc:name="update-flag-payload" doc:id="20e259f0-c154-4b19-997c-4cf9d8103242">
 			<ee:message>
 				<ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -154,10 +154,11 @@ output application/json
 			</ee:message>
 			<ee:variables>
 				<ee:set-variable variableName="sf"><![CDATA[%dw 2.0
-output application/java
+output application/json
 ---
 {
-	"query": "SELECT Address__c,City__c,contact__c,Customer_Id__c,Email__c,Name__c,Password__c,Pincode__c,Registration_Date__c,State__c FROM customer__c WHERE Customer_Id__c=" ++ vars.requestParams.uriParams.customerid as String default ""
+	"object": 'DeliveryPartner__c',
+	"object_id": 'Partner_Id__c'
 }]]></ee:set-variable>
 			</ee:variables>
 		</ee:transform>
