@@ -7,7 +7,7 @@ http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/cu
     <http:listener-config name="sf-sys-api-httplistener-config">
         <http:listener-connection host="0.0.0.0" port="${httpListener.port}" readTimeout="${httpListener.read-timeout}"/>
     </http:listener-config>
-    <apikit:config name="sf-sys-api-config" api="resource::452f3798-822a-44ef-87e5-4e40034054da:sf-sys-api:1.0.3:raml:zip:sf-sys-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+    <apikit:config name="sf-sys-api-config" api="resource::635159a8-be44-4ed5-a886-bb461c9661c6:sf-sys-apiraml:1.0.0:raml:zip:sf-sys-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
     <salesforce:sfdc-config name="salesforce-config" doc:name="Salesforce Config" doc:id="a69ac31e-481d-4b81-a172-13003c45fcd4">
         <salesforce:basic-connection username="tgh_shop@sandbox.com" securityToken="cunlmzuHp5cXjME7inRCVDhex" password="Tgh@12345"/>
     </salesforce:sfdc-config>
@@ -15,7 +15,7 @@ http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/cu
     <json-logger:config name="json-logger-config" doc:name="JSON Logger Config" doc:id="bd056e79-e108-459f-9e15-b3e367489467" environment="${mule.env}" applicationName="${app.name}" applicationVersion="${app.version}"/>
     <configuration-properties doc:name="configuration-properties" doc:id="ee3326be-5c5d-49f5-b6c7-f2e11fbbfa21" file="config/${mule.env}-properties.yaml" />
 	<secure-properties:config name="secure-properties-config" doc:name="Secure Properties Config" doc:id="a9e4a339-6b43-4e9d-ab19-aff993e6e266" file="config/${mule.env}-secure-properties.yaml" key="ordersmanagement" />
-    <api-gateway:autodiscovery apiId="20592256" ignoreBasePath="true" doc:name="api-autodiscovery" doc:id="c783230b-ef9c-4d9a-8c4f-804a7b327853" flowRef="sf-sys-api-main" />
+    <api-gateway:autodiscovery apiId="20622111" ignoreBasePath="true" doc:name="api-autodiscovery" doc:id="c783230b-ef9c-4d9a-8c4f-804a7b327853" flowRef="sf-sys-api-main" />
 		<error-handler name="global-error-handler" doc:id="2b49a2d6-57cb-4dae-af8e-7877b4ea90a0" >
 		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="620f0c17-a945-4989-9b55-15105f10e490" type="ANY">
 			<ee:transform doc:name="error-payload-to-json" doc:id="32ae8097-060b-4538-8ab2-71e554820d9b" >

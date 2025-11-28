@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:json-logger="http://www.mulesoft.org/schema/mule/json-logger" xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd  http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd http://www.mulesoft.org/schema/mule/json-logger http://www.mulesoft.org/schema/mule/json-logger/current/mule-json-logger.xsd">
-    <flow name="sf-sys-api-main">
+    <flow name="sf-sys-api-main" doc:id="f43ce4c3-c6f7-4d4a-a8e1-1427cf5aef31">
         <http:listener config-ref="sf-sys-api-httplistener-config" path="/*">
             <http:response statusCode="#[vars.httpStatus default 200]">
                 <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
@@ -13,7 +13,7 @@
         <apikit:router config-ref="sf-sys-api-config" />
 		<error-handler ref="interface-error-handler" />
     </flow>
-    <flow name="put:\api\v1\customers\(customerId):application\json:sf-sys-api-config">
+    <flow name="put:\api\v1\customers\(customerId):application\json:sf-sys-api-config" doc:id="9a10d163-f7b5-4a0a-8003-1122119ba973">
         <json-logger:logger doc:name="log-update-customer-details-start" doc:id="c2a8f978-b5db-4eb3-9875-365e9ddec318" config-ref="json-logger-config" message="#[&quot;-------&quot; ++ upper(&quot;log-update-customer-details-start&quot;) ++ &quot;---------&quot;]">
             <json-logger:content><![CDATA[#[payload]]]></json-logger:content>
         </json-logger:logger>
@@ -31,7 +31,7 @@ payload]]></ee:set-payload>
             <json-logger:content><![CDATA[#[payload]]]></json-logger:content>
         </json-logger:logger>
     </flow>
-    <flow name="put:\api\v1\inventory\(productId):application\json:sf-sys-api-config">
+    <flow name="put:\api\v1\inventory\(productId):application\json:sf-sys-api-config" doc:id="40bf1cc9-7152-41d1-86f1-07b9cf07d41a">
         <json-logger:logger doc:name="log-update-inventory-products-start" doc:id="43e0a689-3183-47df-8829-03d8313215e1" config-ref="json-logger-config" message="#[&quot;---------&quot; ++ upper(&quot;log-update-inventory-products-start&quot;) ++ &quot;---------&quot;]">
             <json-logger:content><![CDATA[#[payload]]]></json-logger:content>
         </json-logger:logger>
@@ -49,7 +49,7 @@ payload]]></ee:set-payload>
             <json-logger:content><![CDATA[#[payload]]]></json-logger:content>
         </json-logger:logger>
     </flow>
-    <flow name="delete:\api\v1\customers\(customerId):application\json:sf-sys-api-config">
+    <flow name="delete:\api\v1\customers\(customerId):application\json:sf-sys-api-config" doc:id="44e38157-4e07-432a-9393-fa3687a60148">
         <json-logger:logger doc:name="log-delete-customer-record-start" doc:id="8fc37227-2dd0-41b2-b9a1-6e3a5139241e" config-ref="json-logger-config" message="#[&quot;-----------&quot; ++ upper(&quot;log-delete-customer-record-start&quot;) ++ &quot;----------&quot;]" />
         <flow-ref doc:name="set-request-params-sub-flow-reference" doc:id="3d8a95ce-2717-42e6-a2ce-05450f4a1341" name="set-request-params-sub-flow" target="requestParams" />
         <flow-ref doc:name="delete-customer-sub-flow" doc:id="6c10c976-7a42-4a45-b0cc-6b60d9258805" name="delete-customer-sub-flow" />
@@ -65,7 +65,7 @@ payload]]></ee:set-payload>
             <json-logger:content><![CDATA[#[payload]]]></json-logger:content>
         </json-logger:logger>
     </flow>
-    <flow name="delete:\api\v1\inventory\(productId):sf-sys-api-config">
+    <flow name="delete:\api\v1\inventory\(productId):sf-sys-api-config" doc:id="6e579b5d-8b00-43a9-9182-9859e639c03c">
         <json-logger:logger doc:name="log-delete-inventory-product-record-start" doc:id="a848ae5b-2d55-4986-b98d-8dfb80ab28dc" config-ref="json-logger-config" message="#[&quot;-----------&quot; ++ upper(&quot;log-delete-inventory-product-record-start&quot;) ++ &quot;--------&quot;]">
             <json-logger:content><![CDATA[#[payload]]]></json-logger:content>
         </json-logger:logger>
@@ -83,7 +83,7 @@ payload]]></ee:set-payload>
             <json-logger:content><![CDATA[#[payload]]]></json-logger:content>
         </json-logger:logger>
     </flow>
-    <flow name="patch:\api\v1\orders\(orderId):application\json:sf-sys-api-config">
+    <flow name="patch:\api\v1\orders\(orderId):application\json:sf-sys-api-config" doc:id="2441826c-d8e7-41c9-b768-92871618f69c">
         <json-logger:logger doc:name="log-update-order-details-start" doc:id="dd37251a-4601-418c-aacf-83659a60369e" config-ref="json-logger-config" message="#[&quot;---------&quot; ++ upper(&quot;log-update-order-details-start&quot;) ++ &quot;---------&quot;]">
             <json-logger:content><![CDATA[#[payload]]]></json-logger:content>
         </json-logger:logger>
@@ -101,7 +101,7 @@ payload]]></ee:set-payload>
             <json-logger:content><![CDATA[#[payload]]]></json-logger:content>
         </json-logger:logger>
     </flow>
-    <flow name="get:\api\v1\customers:sf-sys-api-config">
+    <flow name="get:\api\v1\customers:sf-sys-api-config" doc:id="33901f2b-8192-4e6b-a0ff-60df1bbf8a50">
         <json-logger:logger doc:name="log-get-customers-data-start" doc:id="54047f8e-d25f-43e8-b144-0ffc5e7b2ae0" config-ref="json-logger-config" message="#[&quot;----------&quot; ++ upper(&quot;log-get-customers-data-start&quot;) ++ &quot;----------&quot;]">
             <json-logger:content><![CDATA[#[payload]]]></json-logger:content>
         </json-logger:logger>
@@ -119,7 +119,7 @@ payload]]></ee:set-payload>
             <json-logger:content><![CDATA[#[payload]]]></json-logger:content>
         </json-logger:logger>
     </flow>
-    <flow name="get:\api\v1\deliveryPartners:sf-sys-api-config">
+    <flow name="get:\api\v1\deliveryPartners:sf-sys-api-config" doc:id="a999a980-b357-4b11-856e-0a3c222b1908">
         <json-logger:logger doc:name="log-get-deliverypartners-data-start" doc:id="b9572254-1251-4607-a742-844e2ba9531c" config-ref="json-logger-config" message="#[&quot;-----------&quot; ++ upper(&quot;log-get-deliverypartners-data-start&quot;) ++&quot;-----------&quot;]">
             <json-logger:content><![CDATA[#[payload]]]></json-logger:content>
         </json-logger:logger>
@@ -137,7 +137,7 @@ payload]]></ee:set-payload>
             <json-logger:content><![CDATA[#[payload]]]></json-logger:content>
         </json-logger:logger>
     </flow>
-    <flow name="get:\api\v1\inventory:sf-sys-api-config">
+    <flow name="get:\api\v1\inventory:sf-sys-api-config" doc:id="ae7bb83d-77db-4a09-a906-620bd3c1078e">
         <json-logger:logger doc:name="log-get-inventory-data-start" doc:id="b7b06926-e35b-42a8-90ec-1e375e5925b3" config-ref="json-logger-config" message="#[&quot;---------&quot; ++ upper(&quot;log-get-inventory-data-start&quot;) ++ &quot;----------&quot;]">
             <json-logger:content><![CDATA[#[payload]]]></json-logger:content>
         </json-logger:logger>
@@ -173,12 +173,12 @@ payload]]></ee:set-payload>
             <json-logger:content><![CDATA[#[payload]]]></json-logger:content>
         </json-logger:logger>
     </flow>
-    <flow name="get:\api\v1\deliveryPartners\(partnerId)\orders:sf-sys-api-config">
+    <flow name="get:\api\v1\deliveryPartners\(partnerId)\orders:sf-sys-api-config" doc:id="38ae5944-56a5-475b-8235-d0a7f81e4dd3">
         <json-logger:logger doc:name="log-get-deliverypatner-orders-start" doc:id="77054a13-2217-498e-b352-281ca6e913a2" config-ref="json-logger-config" message='#["---------" ++ upper("log-get-deliverypatner-orders-start") ++ "---------"]'>
             <json-logger:content><![CDATA[#[payload]]]></json-logger:content>
         </json-logger:logger>
         <flow-ref doc:name="set-request-params-sub-flow-reference" doc:id="3f157efe-12ff-40d0-b319-f1b28981b771" name="set-request-params-sub-flow" target="requestParams" />
-        <flow-ref doc:name="get-deliverypartner-byid-sub-flow" doc:id="2689eb03-ee83-433e-94eb-e75edf0d0874" name="get-deliverypartner-byid-sub-flow" />
+        <flow-ref doc:name="get-orders-partnerbyid-sub-flow" doc:id="2689eb03-ee83-433e-94eb-e75edf0d0874" name="get-orders-partnerbyid-sub-flow" />
         <ee:transform doc:name="response-payload">
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
@@ -191,7 +191,7 @@ payload]]></ee:set-payload>
             <json-logger:content><![CDATA[#[payload]]]></json-logger:content>
         </json-logger:logger>
     </flow>
-    <flow name="get:\api\v1\orders:sf-sys-api-config">
+    <flow name="get:\api\v1\orders:sf-sys-api-config" doc:id="09eee4e9-f057-4348-8762-8ee8c7459ce9">
         <json-logger:logger doc:name="log-get-orders-data-start" doc:id="5320b2a7-bd50-4385-adba-2852743b62a7" config-ref="json-logger-config" message="#[&quot;---------&quot; ++ upper(&quot;log-get-orders-data-start&quot;) ++ &quot;----------&quot;]">
             <json-logger:content><![CDATA[#[payload]]]></json-logger:content>
         </json-logger:logger>
@@ -227,7 +227,7 @@ payload]]></ee:set-payload>
             <json-logger:content><![CDATA[#[payload]]]></json-logger:content>
         </json-logger:logger>
     </flow>
-    <flow name="get:\api\v1\customers\(customerId):sf-sys-api-config">
+    <flow name="get:\api\v1\customers\(customerId):sf-sys-api-config" doc:id="8ab06a75-e823-4165-8fcc-c816b2f04289">
         <json-logger:logger doc:name="log-get-customer-details-start" doc:id="cfe29c05-9c44-48c8-8110-ffd7939ba4e7" config-ref="json-logger-config" message="#[&quot;-----------&quot; ++ upper(&quot;log-get-customer-details-start&quot;) ++ &quot;----------&quot;]">
             <json-logger:content><![CDATA[#[payload]]]></json-logger:content>
         </json-logger:logger>
@@ -263,7 +263,7 @@ payload]]></ee:set-payload>
             <json-logger:content><![CDATA[#[payload]]]></json-logger:content>
         </json-logger:logger>
     </flow>
-    <flow name="get:\api\v1\orders\(orderId):sf-sys-api-config">
+    <flow name="get:\api\v1\orders\(orderId):sf-sys-api-config" doc:id="8ae809a7-4cb9-47ce-99fd-cc31dd1f4e37">
         <json-logger:logger doc:name="log-get-order-details-start" doc:id="d9fd03ef-8362-4fa3-a14d-aac2c216fb25" config-ref="json-logger-config" message="#[&quot;-----------&quot; ++ upper(&quot;log-get-order-details-start&quot;) ++ &quot;-----------&quot;]">
             <json-logger:content><![CDATA[#[payload]]]></json-logger:content>
         </json-logger:logger>
@@ -281,7 +281,7 @@ payload]]></ee:set-payload>
             <json-logger:content><![CDATA[#[payload]]]></json-logger:content>
         </json-logger:logger>
     </flow>
-    <flow name="get:\api\v1\deliveryPartners\(partnerId):sf-sys-api-config">
+    <flow name="get:\api\v1\deliveryPartners\(partnerId):sf-sys-api-config" doc:id="055fbc18-14f8-4d0a-855c-d6eae6ac1d17">
         <json-logger:logger doc:name="log-get-deliverypartner-details-start" doc:id="cec42726-5491-43a1-a4be-5dea4411933e" config-ref="json-logger-config" message="#[&quot;-------------&quot; ++ upper(&quot;log-get-deliverypartner-details-start&quot;) ++ &quot;-----------&quot;]">
             <json-logger:content><![CDATA[#[payload]]]></json-logger:content>
         </json-logger:logger>
@@ -299,7 +299,7 @@ payload]]></ee:set-payload>
             <json-logger:content><![CDATA[#[payload]]]></json-logger:content>
         </json-logger:logger>
     </flow>
-    <flow name="get:\api\v1\inventory\(productId):sf-sys-api-config">
+    <flow name="get:\api\v1\inventory\(productId):sf-sys-api-config" doc:id="fe541534-a70c-4cd3-9455-d5a8924560eb">
         <json-logger:logger doc:name="log-get-inventory-product-details-start" doc:id="92ae631b-5813-4205-81c4-5e2fbea8187c" config-ref="json-logger-config" message="#[&quot;------------&quot; ++ upper(&quot;log-get-inventory-product-details-start&quot;) ++ &quot;-----------&quot;]">
             <json-logger:content><![CDATA[#[payload]]]></json-logger:content>
         </json-logger:logger>
@@ -335,7 +335,7 @@ payload]]></ee:set-payload>
             <json-logger:content><![CDATA[#[payload]]]></json-logger:content>
         </json-logger:logger>
     </flow>
-    <flow name="post:\api\v1\customers:application\json:sf-sys-api-config">
+    <flow name="post:\api\v1\customers:application\json:sf-sys-api-config" doc:id="ffc7fa1a-9c30-4108-adfb-1aeb5e083ee9">
         <json-logger:logger doc:name="log-post-customer-record-start" doc:id="cb414b19-8f09-405f-a2d5-b7d36b91532f" config-ref="json-logger-config" message="#[&quot;----------&quot; ++ upper(&quot;log-post-customer-record-start&quot;) ++ '----------']">
             <json-logger:content><![CDATA[#[payload]]]></json-logger:content>
         </json-logger:logger>
@@ -353,7 +353,7 @@ payload]]></ee:set-payload>
             <json-logger:content><![CDATA[#[payload]]]></json-logger:content>
         </json-logger:logger>
     </flow>
-    <flow name="post:\api\v1\inventory:application\json:sf-sys-api-config">
+    <flow name="post:\api\v1\inventory:application\json:sf-sys-api-config" doc:id="ee71d301-2a42-4272-8718-2818fc788098">
         <json-logger:logger doc:name="log-post-inventory-record-start" doc:id="9f3c5df2-041e-4fa7-9d1e-3d822ac50e57" config-ref="json-logger-config" message="#[&quot;-----------&quot; ++ upper(&quot;log-post-inventory-record-start&quot;) ++ &quot;---------&quot;]">
             <json-logger:content><![CDATA[#[payload]]]></json-logger:content>
         </json-logger:logger>
@@ -389,7 +389,7 @@ payload]]></ee:set-payload>
             <json-logger:content><![CDATA[#[payload]]]></json-logger:content>
         </json-logger:logger>
     </flow>
-    <flow name="post:\api\v1\orders:application\json:sf-sys-api-config">
+    <flow name="post:\api\v1\orders:application\json:sf-sys-api-config" doc:id="15a4fb4f-6e8a-43c0-a472-a78451070b4a">
         <json-logger:logger doc:name="log-post-order-record-start" doc:id="17ac8e06-4cea-422f-8340-e5cf7bcd00d3" config-ref="json-logger-config" message="#[&quot;----------&quot; ++ upper(&quot;log-post-order-record-start&quot;) ++ &quot;---------------&quot;]">
             <json-logger:content><![CDATA[#[payload]]]></json-logger:content>
         </json-logger:logger>
@@ -425,7 +425,7 @@ payload]]></ee:set-payload>
             <json-logger:content><![CDATA[#[payload]]]></json-logger:content>
         </json-logger:logger>
     </flow>
-    <flow name="put:\api\v1\deliveryPartners\(partnerId):application\json:sf-sys-api-config">
+    <flow name="put:\api\v1\deliveryPartners\(partnerId):application\json:sf-sys-api-config" doc:id="ad3f039b-a639-4a8e-9219-8a1fa80b4d4f">
         <json-logger:logger doc:name="log-put-deliverypartner-details-start" doc:id="38839993-d8e1-4766-9466-de37d2685242" config-ref="json-logger-config" message='#["-------------" ++ upper("log-put-deliverypartner-details-start") ++ "-----------"]'>
 			<json-logger:content><![CDATA[#[payload]]]></json-logger:content>
 		</json-logger:logger>
@@ -443,25 +443,7 @@ payload]]></ee:set-payload>
 			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
 		</json-logger:logger>
     </flow>
-    <flow name="delete:\api\v1\customers\(customerId):sf-sys-api-config">
-        <json-logger:logger doc:name="log-delete-customer-record-start" doc:id="7ea5301c-746e-45a4-979b-201d0cf8aa63" config-ref="json-logger-config" message="#[&quot;----------&quot; ++ upper(&quot;log-delete-customer-record-start&quot;) ++ '----------']">
-			<json-logger:content><![CDATA[#[payload]]]></json-logger:content>
-		</json-logger:logger>
-		<flow-ref doc:name="set-request-params-sub-flow-reference" doc:id="c5be8de4-73e5-4b0b-a9e1-a84512242494" name="set-request-params-sub-flow" target="requestParams" />
-		<flow-ref doc:name="delete-customer-sub-flow" doc:id="5de01b27-312b-41ff-93bf-80aeea00d97c" name="delete-customer-sub-flow" />
-        <ee:transform doc:name="response-payload">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-payload]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
-		<json-logger:logger doc:name="log-delete-customer-record-end" doc:id="f9147535-3530-4ea6-9223-a3d20e65f93b" config-ref="json-logger-config" message="#[&quot;----------&quot; ++ upper(&quot;log-delete-customer-record-end&quot;) ++ '----------']" >
-			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
-		</json-logger:logger>
-    </flow>
-    <flow name="delete:\api\v1\orders\(orderId):sf-sys-api-config">
+    <flow name="delete:\api\v1\orders\(orderId):sf-sys-api-config" doc:id="e9d8238a-98ac-4b46-9389-2a5e0ce0f3fe">
         <json-logger:logger doc:name="log-delete-order-start" doc:id="bd04863c-3e8c-4070-b313-76ae5d334237" config-ref="json-logger-config" message="#[&quot;----------&quot; ++ upper(&quot;log-delete-order-start&quot;) ++ '----------']">
 			<json-logger:content><![CDATA[#[payload]]]></json-logger:content>
 		</json-logger:logger>
@@ -479,7 +461,7 @@ payload]]></ee:set-payload>
 			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
 		</json-logger:logger>
     </flow>
-    <flow name="delete:\api\v1\deliveryPartners\(partnerId):application\json:sf-sys-api-config">
+    <flow name="delete:\api\v1\deliveryPartners\(partnerId):application\json:sf-sys-api-config" doc:id="e106d463-0a3f-4bef-b885-b41ad6e5a257">
         <json-logger:logger doc:name="log-delete-deliverypartner-start" doc:id="8c1c4037-8a51-4c75-b511-e4e9e53a7530" config-ref="json-logger-config" message='#["-------------" ++ upper("log-delete-deliverypartner-start") ++ "-----------"]'>
 			<json-logger:content><![CDATA[#[payload]]]></json-logger:content>
 		</json-logger:logger>
@@ -515,7 +497,7 @@ payload]]></ee:set-payload>
 			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
 		</json-logger:logger>
     </flow>
-    <flow name="get:\api\v1\customers\(customerId)\orders:sf-sys-api-config">
+    <flow name="get:\api\v1\customers\(customerId)\orders:sf-sys-api-config" doc:id="5be40b1d-41b8-4a39-8a79-c27174da395c">
         <json-logger:logger doc:name="log-get-customer-orders-start" doc:id="82d346ed-3214-4ed2-92cc-3102fb143115" config-ref="json-logger-config" message="#[&quot;----------&quot; ++ upper(&quot;log-get-customer-records-start&quot;) ++ '----------']">
 			<json-logger:content><![CDATA[#[payload]]]></json-logger:content>
 		</json-logger:logger>
@@ -533,7 +515,7 @@ payload]]></ee:set-payload>
 			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
 		</json-logger:logger>
     </flow>
-    <flow name="post:\api\v1\deliveryPartners:application\json:sf-sys-api-config">
+    <flow name="post:\api\v1\deliveryPartners:application\json:sf-sys-api-config" doc:id="8e1d4e11-62ee-420a-9ecc-d4513728a2c2">
         <json-logger:logger doc:name="log-post-deliverypartner-details-start" doc:id="444cf858-698a-4049-a638-68491599bab8" config-ref="json-logger-config" message='#["-------------" ++ upper("log-post-deliverypartner-details-start") ++ "-----------"]'>
 			<json-logger:content><![CDATA[#[payload]]]></json-logger:content>
 		</json-logger:logger>

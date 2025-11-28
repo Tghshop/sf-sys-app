@@ -15,7 +15,7 @@ http://www.mulesoft.org/schema/mule/json-logger http://www.mulesoft.org/schema/m
 output application/java
 ---
 {
-	"query": 'SELECT Current_City__c,customer__c,DeliveryPartner__c,Delivery_Time__c,Destination_City__c,Id,order__c,Source_City__c,Transit_Id__c FROM Transit__c'
+	"query": 'SELECT Current_City__c,customer__c,DeliveryPartner__c,Destination_City__c,Id,order__c,Source_City__c,Transit_Id__c FROM Transit__c'
 }]]></ee:set-variable>
 			</ee:variables>
 		</ee:transform>
@@ -35,7 +35,7 @@ output application/java
 output application/java
 ---
 {
-	"query": "SELECT Current_City__c,customer__c,DeliveryPartner__c,Delivery_Time__c,Destination_City__c,Id,order__c,Source_City__c,Transit_Id__c FROM Transit__c WHERE Transit_Id__c='" ++ vars.requestParams.uriParams.transitId as String default "" ++ "'"
+	"query": "SELECT Current_City__c,customer__c,DeliveryPartner__c,Destination_City__c,Id,order__c,Source_City__c,Transit_Id__c FROM Transit__c WHERE Transit_Id__c='" ++ vars.requestParams.uriParams.transitId as String default "" ++ "'"
 }]]></ee:set-variable>
 			</ee:variables>
 		</ee:transform>

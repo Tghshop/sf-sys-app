@@ -1,0 +1,775 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="sf-sys-test-suite.xml" />
+	<munit:test name="sf-sys-test-get-customers-data" doc:id="d8626925-2491-4b19-acc3-f12e117025a1" >
+		<munit:behavior>
+			<munit-tools:mock-when doc:name="Mocking-saleforce-query" doc:id="1ede24e9-aa1b-483f-aa94-bfc3cdd5419b" processor="salesforce:query">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Query" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="9025902f-e14a-48b4-af96-21236286a768" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="Query" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="9025902f-e14a-48b4-af96-21236286a768" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://customers/get-query-customers-response.dwl')]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="get:\api\v1\customers:sf-sys-api-config" doc:id="e0065c87-d986-44f0-9643-dbbf6db4c141" name="get:\api\v1\customers:sf-sys-api-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="f5e1fb37-be13-4a29-8924-19766c5add81" actual="#[payload]" expected="#[output application/json --- readUrl('classpath://customers/get-customers-response.dwl')]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="sf-sys-test-get-customer-data" doc:id="3de1a27c-22c2-4ae9-8403-e08f8f757200" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mocking-saleforce-query" doc:id="f4f08398-622c-4950-bb38-ab62bfb8e9f0" processor="salesforce:query" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Query" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="9025902f-e14a-48b4-af96-21236286a768" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://customers/get-query-customer-response.dwl')]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="b3f3d1e7-2031-48b3-bc1c-84af604a0747" cloneOriginalEvent="true">
+				<munit:attributes value="#[{&#10;	uriParams: {&#10;       customerId: 'CUST004'&#10;          }&#10;}]" />
+			</munit:set-event>
+			<flow-ref doc:name="get:\api\v1\customers\(customerId):sf-sys-api-config" doc:id="98ed75af-9c81-4574-9346-601edb0bbdad" name="get:\api\v1\customers\(customerId):sf-sys-api-config" />
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="d131792a-ddd3-4825-8889-ffec0e865e1d" actual="#[payload]" expected="#[output application/json --- readUrl('classpath://customers/get-customer-response.dwl')]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="sf-sys-test-post-customer-data" doc:id="12e2b668-6ab9-4a60-a7ea-78aa89675966" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mocking-saleforce-upsert" doc:id="090c45be-9fb4-452b-b6c2-abd7a46b1fa6" processor="salesforce:upsert" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Upsert" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="a94697f6-18dd-4f2f-a362-f5516db4f618" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://customers/post-customer-upsert-response.dwl')]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="ab6d787d-c6cc-4e62-b703-29072c5604be">
+				<munit:payload value="#[output application/json --- readUrl('classpath://customers/post-customer-request.dwl')]" />
+			</munit:set-event>
+			<flow-ref doc:name="post:\api\v1\customers:application\json:sf-sys-api-config" doc:id="dd1404bb-a9b3-4596-af4d-ebce7d6d2be7" name="post:\api\v1\customers:application\json:sf-sys-api-config" />
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="efe723b4-4ad5-440a-afc3-4ab6eacaddba" actual="#[payload]" expected="#[output application/json --- readUrl('classpath://customers/post-customer-response.dwl')]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="sf-sys-test-put-customer-data" doc:id="26c3171e-05e1-4149-8fb8-3c9ff729914f" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mocking-saleforce-upsert" doc:id="64173db3-68a7-4b7b-9eff-ccab050b0d31" processor="salesforce:upsert" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Upsert" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="a94697f6-18dd-4f2f-a362-f5516db4f618" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://customers/put-customer-upsert-response.dwl')]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="2a231670-6ddc-4efb-bc2f-339e0750f086">
+				<munit:payload value="#[output application/json --- readUrl('classpath://customers/put-customer-request.dwl')]" />
+				<munit:attributes value="#[{&#10;	uriParams: {&#10;       customerId: 'CUST004'&#10;          }&#10;}]" />
+			</munit:set-event>
+			<flow-ref doc:name="put:\api\v1\customers\(customerId):application\json:sf-sys-api-config" doc:id="a1fc088b-b19d-4511-9110-3dcfe9adb7bf" name="put:\api\v1\customers\(customerId):application\json:sf-sys-api-config" />
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="9891eeab-fa12-4ef6-8821-8d0c3e3c0f61" actual="#[payload]" expected="#[output application/json --- readUrl('classpath://customers/put-customer-response.dwl')]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="sf-sys-test-get-customer-orders-data" doc:id="df73b448-f91d-4d8d-a6fc-dc68a25e654e" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mocking-saleforce-query" doc:id="e77b19af-7623-4562-9c5d-44370c8f8794" processor="salesforce:query" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Query" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="9025902f-e14a-48b4-af96-21236286a768" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://customers/get-customer-orders-query-response.dwl')]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="c9067783-49dc-4e7e-a573-ae82c81b0efc" cloneOriginalEvent="true">
+				<munit:attributes value="#[{&#10;	uriParams: {&#10;       customerId: 'a04Qy00000CiynzIAB'&#10;          }&#10;}]" />
+				</munit:set-event>
+			<flow-ref doc:name="get:\api\v1\customers\(customerId)\orders:sf-sys-api-config" doc:id="42eb3a14-fa74-4606-aff6-af29f042b6fb" name="get:\api\v1\customers\(customerId)\orders:sf-sys-api-config" />
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="3bdb5fab-8719-4439-9b30-1c3047264876" actual="#[payload]" expected="#[output application/json --- readUrl('classpath://customers/get-customer-orders-response.dwl')]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="sf-sys-test-delete-customer-data" doc:id="9761363a-bb4b-40e9-9237-e563af35a0a8" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mocking-saleforce-query" doc:id="54fd4afd-7ca5-44a4-9ea8-adf42f126f38" processor="salesforce:query" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Query" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="9025902f-e14a-48b4-af96-21236286a768" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://customers/delete-query-customer-response.dwl')]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mocking-saleforce-upsert" doc:id="4e2d4f29-6b0c-4256-b54d-7af7169544ee" processor="salesforce:upsert" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Upsert" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="a94697f6-18dd-4f2f-a362-f5516db4f618" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://customers/delete-upsert-customer-response.dwl')]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="ab7ebacc-c663-4424-afd7-1de877e8e442" cloneOriginalEvent="true" >
+				<munit:attributes value="#[{&#10;	uriParams: {&#10;       customerId: 'CUST004'&#10;          }&#10;}]" />
+			</munit:set-event>
+			<flow-ref doc:name="delete:\api\v1\customers\(customerId):application\json:sf-sys-api-config" doc:id="763cd205-469f-4b4c-9dbe-f7c2d1c9035e" name="delete:\api\v1\customers\(customerId):application\json:sf-sys-api-config" />
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="a145c744-90cb-461f-a1ef-dfa647f25c4d" actual="#[payload]" expected="#[output application/json --- readUrl('classpath://customers/delete-customer-response.dwl')]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="sf-sys-test-get-orders-data" doc:id="64795eed-3fbd-4ee7-97f6-9cee61633a2b" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mocking-saleforce-query" doc:id="e49e8ed6-9bbf-4b75-ac57-c092b5b3dc85" processor="salesforce:query" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Query" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="9025902f-e14a-48b4-af96-21236286a768" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="Query" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="9025902f-e14a-48b4-af96-21236286a768" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://orders/get-query-orders-response.dwl')]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="get:\api\v1\orders:sf-sys-api-config" doc:id="bc0469a7-7eec-41fa-b196-5fc861b741a0" name="get:\api\v1\orders:sf-sys-api-config" />
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="46b3346e-72cd-4d93-b995-3f0d4fb368f0" actual="#[payload]" expected="#[output application/json --- readUrl('classpath://orders/get-orders-response.dwl')]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="sf-sys-test-get-order-data" doc:id="f2f1aaf1-c0ff-4e36-9345-0e32d275e426" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mocking-saleforce-query" doc:id="1c641762-c1d7-459c-b832-ea05bac4830f" processor="salesforce:query" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Query" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="9025902f-e14a-48b4-af96-21236286a768" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://orders/get-query-order-response.dwl')]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="77145522-8eb5-4d7b-8f9f-9a473a153c83" cloneOriginalEvent="true" >
+				<munit:attributes value="#[{&#10;	uriParams: {&#10;       orderId: 'ORD1002'&#10;          }&#10;}]" />
+			</munit:set-event>
+			<flow-ref doc:name="get:\api\v1\orders\(orderId):sf-sys-api-config" doc:id="ae9404bd-9321-453e-98d2-e67b66e38d06" name="get:\api\v1\orders\(orderId):sf-sys-api-config" />
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="44c50fb3-a5f0-4046-b988-07bb31c43757" actual="#[payload]" expected="#[output application/json --- readUrl('classpath://orders/get-order-response.dwl')]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="sf-sys-test-post-order-data" doc:id="38cdf5d9-d314-4f80-981a-d3d0e0b77c61" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mocking-saleforce-upsert" doc:id="3f94b431-e64c-4b6e-a9ac-2f0d1d74b10b" processor="salesforce:upsert" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Upsert" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="a94697f6-18dd-4f2f-a362-f5516db4f618" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://orders/post-order-upsert-response.dwl')]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="1496e366-439b-4745-8327-0a1468bf2796" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://orders/post-order-request.dwl')]" />
+				<munit:attributes value="#[{&#10;	uriParams: {&#10;       customerId: 'CUST004'&#10;          }&#10;}]" />
+			</munit:set-event>
+			<flow-ref doc:name="post:\api\v1\orders:application\json:sf-sys-api-config" doc:id="88be554e-6782-49e5-af97-6c77de9af0a6" name="post:\api\v1\orders:application\json:sf-sys-api-config" />
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="1333ab21-c385-44f1-8b93-e3a62ecb3849" actual="#[payload]" expected="#[output application/json --- readUrl('classpath://orders/post-order-response.dwl')]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="sf-sys-test-patch-order-data" doc:id="6dacb637-9629-4d5e-962f-e9ab9df0a6ac" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mocking-saleforce-upsert" doc:id="4051d92e-80ca-4a47-83e5-baa5d4f03825" processor="salesforce:upsert" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Upsert" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="a94697f6-18dd-4f2f-a362-f5516db4f618" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://orders/patch-order-upsert-response.dwl')]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="cb19f69c-875b-475b-b009-3adeb4e770a9" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://orders/patch-order-request.dwl')]" />
+				<munit:attributes value="#[{&#10;	uriParams: {&#10;       orderId: 'ORD1002'&#10;          }&#10;}]" />
+			</munit:set-event>
+			<flow-ref doc:name="patch:\api\v1\orders\(orderId):application\json:sf-sys-api-config" doc:id="9b167586-cfeb-417c-921e-9d1569601c32" name="patch:\api\v1\orders\(orderId):application\json:sf-sys-api-config" />
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="5a6dbee6-e534-4990-8c3c-7e88ce8c6330" actual="#[payload]" expected="#[output application/json --- readUrl('classpath://orders/patch-order-response.dwl')]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="sf-sys-test-delete-order-data" doc:id="762a851e-3a14-450a-9778-5cc2e020890c" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mocking-saleforce-query" doc:id="75f02c6d-eef3-4b0b-824e-4199740dd8d8" processor="salesforce:query" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Query" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="9025902f-e14a-48b4-af96-21236286a768" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://orders/delete-query-order-response.dwl')]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mocking-saleforce-upsert" doc:id="01aa66ad-6b2a-4518-94d0-52729ed9163e" processor="salesforce:upsert" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Upsert" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="a94697f6-18dd-4f2f-a362-f5516db4f618" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://orders/delete-upsert-order-response.dwl')]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="8ae843d4-4b3f-4f39-a7f9-773789cdb65e" cloneOriginalEvent="true" >
+				<munit:attributes value="#[{&#10;	uriParams: {&#10;       customerId: 'ORD1002'&#10;          }&#10;}]" />
+			</munit:set-event>
+			<flow-ref doc:name="delete:\api\v1\orders\(orderId):sf-sys-api-config" doc:id="d637645c-1495-49fc-98fd-0071de7313bb" name="delete:\api\v1\orders\(orderId):sf-sys-api-config" />
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="448bf548-29d0-4561-a0fe-4092c9613ab9" actual="#[payload]" expected="#[output application/json --- readUrl('classpath://orders/delete-order-response.dwl')]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="sf-sys-test-get-partners-data" doc:id="13d63a26-0466-482f-b9b4-484c8166c45a" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mocking-saleforce-query" doc:id="4e6435ef-b83b-48e6-a867-f1a0ad34dd7c" processor="salesforce:query" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Query" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="9025902f-e14a-48b4-af96-21236286a768" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="Query" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="9025902f-e14a-48b4-af96-21236286a768" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://deliveryPartners/get-query-partner-response.dwl')]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="get:\api\v1\deliveryPartners:sf-sys-api-config" doc:id="5fe7eb44-17c1-44d4-9c6c-769c94c81911" name="get:\api\v1\deliveryPartners:sf-sys-api-config" />
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="ee992d0a-eaec-4b90-bd66-6bbbc45f63f4" actual="#[payload]" expected="#[output application/json --- readUrl('classpath://deliveryPartners/get-partners-response.dwl')]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="sf-sys-test-get-partner-data" doc:id="592bd0a2-e357-43a9-983e-b6abe353bf2f" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mocking-saleforce-query" doc:id="07239cc2-f764-44ca-85d9-160c6c8d889f" processor="salesforce:query" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Query" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="9025902f-e14a-48b4-af96-21236286a768" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://deliveryPartners/get-query-partner-response.dwl')]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="5750ae32-25c3-40eb-9b86-2fc67f105a45" cloneOriginalEvent="true" >
+				<munit:attributes value="#[{&#10;	uriParams: {&#10;       partnerId: 'DP002'&#10;          }&#10;}]" />
+			</munit:set-event>
+			<flow-ref doc:name="get:\api\v1\deliveryPartners\(partnerId):sf-sys-api-config" doc:id="c663b95b-13f4-4a91-924d-825237478993" name="get:\api\v1\deliveryPartners\(partnerId):sf-sys-api-config" />
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="f6ee9965-baf2-4d1a-a0ea-8469f66dad32" actual="#[payload]" expected="#[output application/json --- readUrl('classpath://deliveryPartners/get-partner-response.dwl')]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="sf-sys-test-post-partner-data" doc:id="f5a12dfc-fb1b-4752-8c9e-9a85e6fd6030" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mocking-saleforce-upsert" doc:id="1d4d1c5b-56ec-4050-84cc-0d2f84ae208a" processor="salesforce:upsert" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Upsert" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="a94697f6-18dd-4f2f-a362-f5516db4f618" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://deliveryPartners/post-partner-upsert-response.dwl')]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="12059858-eded-48d2-8286-a0b3755eb561" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://deliveryPartners/post-partner-request.dwl')]" />
+			</munit:set-event>
+			<flow-ref doc:name="post:\api\v1\deliveryPartners:application\json:sf-sys-api-config" doc:id="788fb02b-a994-47ac-b329-60538fdcfcf6" name="post:\api\v1\deliveryPartners:application\json:sf-sys-api-config" />
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="65826fbf-ed5c-4145-bafd-7aca69a31c3a" actual="#[payload]" expected="#[output application/json --- readUrl('classpath://deliveryPartners/post-partner-response.dwl')]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="sf-sys-test-put-partner-data" doc:id="a7152d12-d68e-4e02-8d8b-0152578e1a0b" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mocking-saleforce-upsert" doc:id="bc99b647-e89a-474d-93d1-0e64bb964e2e" processor="salesforce:upsert" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Upsert" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="a94697f6-18dd-4f2f-a362-f5516db4f618" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://deliveryPartners/put-partner-upsert-response.dwl')]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="5427075b-eb15-414c-a6d8-7355aed2db62" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://deliveryPartners/put-partner-request.dwl')]" />
+				<munit:attributes value="#[{&#10;	uriParams: {&#10;       partnerId: 'DP002'&#10;          }&#10;}]" />
+			</munit:set-event>
+			<flow-ref doc:name="put:\api\v1\deliveryPartners\(partnerId):application\json:sf-sys-api-config" doc:id="5d2190a3-e4cb-4641-8695-5edfd63829ed" name="put:\api\v1\deliveryPartners\(partnerId):application\json:sf-sys-api-config" />
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="6e3dbd40-7960-4208-b9af-3e8c3923b493" actual="#[payload]" expected="#[output application/json --- readUrl('classpath://deliveryPartners/put-partner-response.dwl')]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="sf-sys-test-delete-partner-data" doc:id="c1b1d1c6-9ffc-4310-a5e6-d2b3963e5ef4" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mocking-saleforce-query" doc:id="0bc93e60-db8a-473f-96a3-99f1f29cbcdc" processor="salesforce:query" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Query" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="9025902f-e14a-48b4-af96-21236286a768" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://deliveryPartners/delete-query-partner-response.dwl')]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mocking-saleforce-upsert" doc:id="2ffae9db-e353-4072-a941-0ff2f8762591" processor="salesforce:upsert" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Upsert" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="a94697f6-18dd-4f2f-a362-f5516db4f618" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://deliveryPartners/delete-upsert-partner-response.dwl')]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="a7211540-0dfd-4eac-9cff-c4f8098b9251" cloneOriginalEvent="true" >
+				<munit:attributes value="#[{&#10;	uriParams: {&#10;       partnerId: 'DP002'&#10;          }&#10;}]" />
+			</munit:set-event>
+			<flow-ref doc:name="delete:\api\v1\deliveryPartners\(partnerId):application\json:sf-sys-api-config" doc:id="d49189d2-d55f-41f2-aced-a5dbbc872f20" name="delete:\api\v1\deliveryPartners\(partnerId):application\json:sf-sys-api-config" />
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="cd0ad242-9925-41db-a855-bf3df9a654fd" actual="#[payload]" expected="#[output application/json --- readUrl('classpath://deliveryPartners/delete-partner-response.dwl')]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="sf-sys-test-get-partner-orders-data" doc:id="4a94c4e1-9ac3-4cd3-9947-acba3322ee6e" >
+		<munit:behavior>
+			<munit-tools:mock-when doc:name="Mocking-saleforce-query" doc:id="116bd8ec-9860-4c4c-a800-861acda0512f" processor="salesforce:query" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Query" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="9025902f-e14a-48b4-af96-21236286a768" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://deliveryPartners/get-partner-orders-response.dwl')]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="ddf7066e-76be-4992-9945-b99dabb40b99" cloneOriginalEvent="true" >
+				<munit:attributes value="#[{&#10;	uriParams: {&#10;       partnerId: 'a05Qy0000186RMzIAM'&#10;          }&#10;}]" />
+			</munit:set-event>
+			<flow-ref doc:name="get:\api\v1\deliveryPartners\(partnerId)\orders:sf-sys-api-config" doc:id="3c955e0b-0d78-454e-b97b-232cec58f958" name="get:\api\v1\deliveryPartners\(partnerId)\orders:sf-sys-api-config" />
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="165f3df3-0cdd-4e1a-abb8-7ab1dc0d59ca" actual="#[payload]" expected="#[output application/json --- readUrl('classpath://deliveryPartners/get-partner-orders-response.dwl')]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="sf-sys-test-get-proucts-data" doc:id="dc7396ba-3520-4323-945a-6042eaaccf41" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mocking-saleforce-query" doc:id="b1ba11f3-2ef0-4931-9f5e-5701c130f6ea" processor="salesforce:query" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Query" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="9025902f-e14a-48b4-af96-21236286a768" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="Query" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="9025902f-e14a-48b4-af96-21236286a768" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://inventory/get-query-products-response.dwl')]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="get:\api\v1\inventory:sf-sys-api-config" doc:id="00113d09-af1d-48bc-84c2-4a1f565cbf9d" name="get:\api\v1\inventory:sf-sys-api-config" />
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="8b84877c-a613-46ef-95f3-f9b5da5b95ab" actual="#[payload]" expected="#[output application/json --- readUrl('classpath://inventory/get-products-response.dwl')]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="sf-sys-test-get-product-data" doc:id="edc897bd-df56-468c-b959-98cb35041ee6" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mocking-saleforce-query" doc:id="cd71e3aa-4bcf-4eb0-9135-87743c9d7747" processor="salesforce:query" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Query" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="9025902f-e14a-48b4-af96-21236286a768" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://inventory/get-query-product-response.dwl')]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="cf344f39-dffb-4d03-b927-26e05bfee62f" cloneOriginalEvent="true" >
+				<munit:attributes value="#[{&#10;	uriParams: {&#10;       productId: 'PROD001'&#10;          }&#10;}]" />
+			</munit:set-event>
+			<flow-ref doc:name="get:\api\v1\inventory\(productId):sf-sys-api-config" doc:id="02b08593-4faf-453a-8558-68ab53e43d39" name="get:\api\v1\inventory\(productId):sf-sys-api-config" />
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="bee17bf4-ebe6-44ce-9303-146c988cfe7e" actual="#[payload]" expected="#[output application/json --- readUrl('classpath://inventory/get-product-response.dwl')]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="sf-sys-test-post-product-data" doc:id="04df2b93-e723-44ad-81b5-92291b12dbda" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mocking-saleforce-upsert" doc:id="60273362-e844-4c5d-a384-a8c322637adb" processor="salesforce:upsert" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Upsert" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="a94697f6-18dd-4f2f-a362-f5516db4f618" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://inventory/post-product-upsert-response.dwl')]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="adf683a9-0dfe-45ae-b140-2e778c2bba6f" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://deliveryPartners/post-partner-request.dwl')]" />
+			</munit:set-event>
+			<flow-ref doc:name="post:\api\v1\inventory:application\json:sf-sys-api-config" doc:id="25679bc0-47e9-4dc4-af98-e84ac908f691" name="post:\api\v1\inventory:application\json:sf-sys-api-config" />
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="8d245543-dff2-4a3b-9ab9-62cdd81a5983" actual="#[payload]" expected="#[output application/json --- readUrl('classpath://inventory/post-product-response.dwl')]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="sf-sys-test-put-product-data" doc:id="7efbae45-8d3e-4193-a08a-5c9faecee554" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mocking-saleforce-upsert" doc:id="4db028d3-1e1b-419b-befc-0b985301cd8d" processor="salesforce:upsert" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Upsert" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="a94697f6-18dd-4f2f-a362-f5516db4f618" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://inventory/put-product-upsert-response.dwl')]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="8cb73626-bd22-490e-98ba-ca70204fa0f5" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://deliveryPartners/put-partner-request.dwl')]" />
+				<munit:attributes value="#[{&#10;	uriParams: {&#10;       productId: 'PROD001'&#10;          }&#10;}]" />
+			</munit:set-event>
+			<flow-ref doc:name="put:\api\v1\inventory\(productId):application\json:sf-sys-api-config" doc:id="fed2a6a7-a6e6-4e83-b714-803a41712933" name="put:\api\v1\inventory\(productId):application\json:sf-sys-api-config" />
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="994dab9f-c2be-4690-81b1-8a4cb9ca2b29" actual="#[payload]" expected="#[output application/json --- readUrl('classpath://inventory/put-product-response.dwl')]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="sf-sys-test-delete-product-data" doc:id="a5cc5f39-f25b-4343-bd07-01b87b450c3c" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mocking-saleforce-query" doc:id="f4275a86-5f6c-4d7c-b8d8-6478e80a82df" processor="salesforce:query" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Query" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="9025902f-e14a-48b4-af96-21236286a768" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://inventory/delete-query-product-response.dwl')]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mocking-saleforce-upsert" doc:id="9d45ae4d-914b-428a-927d-bee62fc7eb9f" processor="salesforce:upsert" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Upsert" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="a94697f6-18dd-4f2f-a362-f5516db4f618" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://inventory/delete-upsert-product-response.dwl')]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="a730f6f4-e68e-4581-9f5e-51cb57f96866" cloneOriginalEvent="true" >
+				<munit:attributes value="#[{&#10;	uriParams: {&#10;       productId: 'PROD001'&#10;          }&#10;}]" />
+			</munit:set-event>
+			<flow-ref doc:name="delete:\api\v1\inventory\(productId):sf-sys-api-config" doc:id="6152d023-c31d-4ed1-a00d-349406049d3b" name="delete:\api\v1\inventory\(productId):sf-sys-api-config" />
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="0da4099f-7aa7-4b68-a3d9-39df7bc38334" actual="#[payload]" expected="#[output application/json --- readUrl('classpath://inventory/delete-product-response.dwl')]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="sf-sys-test-get-transits-data" doc:id="4d8f18f6-4023-43a7-8267-06b87deb8474" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mocking-saleforce-query" doc:id="43cd3b16-f6d5-4877-b07a-0655e15f9a66" processor="salesforce:query" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Query" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="9025902f-e14a-48b4-af96-21236286a768" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="Query" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="9025902f-e14a-48b4-af96-21236286a768" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://transits/get-query-transit-response.dwl')]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="get:\api\v1\transits:sf-sys-api-config" doc:id="fb57d0ba-1239-42c5-ab74-b84670645a95" name="get:\api\v1\transits:sf-sys-api-config" />
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="04b98ff4-44c4-48de-b326-c771dfc874e0" actual="#[payload]" expected="#[output application/json --- readUrl('classpath://transits/get-transits-response.dwl')]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="sf-sys-test-get-transit-data" doc:id="f12d9296-c606-47e0-b4e8-b34d35078e30" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mocking-saleforce-query" doc:id="49ff195d-0028-4629-892e-62ae83c152f8" processor="salesforce:query" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Query" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="9025902f-e14a-48b4-af96-21236286a768" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://transits/get-query-transit-response.dwl')]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="1cc6c3f3-73f6-4e11-b881-5aee2165d17d" cloneOriginalEvent="true" >
+				<munit:attributes value="#[{&#10;	uriParams: {&#10;       transitId: 'TR001'&#10;          }&#10;}]" />
+			</munit:set-event>
+			<flow-ref doc:name="get:\api\v1\transits\(transitId):sf-sys-api-config" doc:id="88442362-785f-4607-8bcd-0822f2df6dba" name="get:\api\v1\transits\(transitId):sf-sys-api-config" />
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="23df03c5-68cc-4594-9841-9c4ae27f074a" actual="#[payload]" expected="#[output application/json --- readUrl('classpath://transits/get-transit-response.dwl')]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="sf-sys-test-post-transit-data" doc:id="fcd29d94-10c6-498a-8e90-facd36df7983" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mocking-saleforce-upsert" doc:id="322147fc-07df-4be6-a41c-bd6c877f0b12" processor="salesforce:upsert" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Upsert" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="a94697f6-18dd-4f2f-a362-f5516db4f618" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://transits/post-transit-upsert-response.dwl')]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="828c7ceb-0aaa-4d48-8afc-3be391ecf0d6" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://transits/post-transit-request.dwl')]" />
+			</munit:set-event>
+			<flow-ref doc:name="post:\api\v1\transits:application\json:sf-sys-api-config" doc:id="8d24f8b1-b81c-4d94-b382-7f74f1117211" name="post:\api\v1\transits:application\json:sf-sys-api-config" />
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="1e397099-f8fc-4cc9-b8c2-5ae3fdce28a9" actual="#[payload]" expected="#[output application/json --- readUrl('classpath://transits/post-transit-response.dwl')]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="sf-sys-test-patch-transit-data" doc:id="48f13550-df51-4b13-9a64-20063035e228" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mocking-saleforce-upsert" doc:id="a760c434-7c57-498b-b4fd-744c07771c19" processor="salesforce:upsert" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Upsert" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="a94697f6-18dd-4f2f-a362-f5516db4f618" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://transits/patch-transit-upsert-response.dwl')]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="1ae39a51-b8e8-4cef-ad55-0bdf008e77ea" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://transits/patch-transit-request.dwl')]" />
+				<munit:attributes value="#[{&#10;	uriParams: {&#10;       transitId: 'TR001'&#10;          }&#10;}]" />
+			</munit:set-event>
+			<flow-ref doc:name="patch:\api\v1\transits\(transitId):application\json:sf-sys-api-config" doc:id="677a8f1e-165b-495a-bcaf-9769ff516ebc" name="patch:\api\v1\transits\(transitId):application\json:sf-sys-api-config" />
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="4c90275f-25bb-4a97-93a5-48f90e117865" actual="#[payload]" expected="#[output application/json --- readUrl('classpath://transits/patch-transit-response.dwl')]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="sf-sys-test-get-invoices-data" doc:id="0fd4fc65-3d02-44d1-b92f-2c1fbb76905c" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mocking-saleforce-query" doc:id="f79929d1-5ea5-4c20-adc6-be52d59c5e21" processor="salesforce:query" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Query" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="9025902f-e14a-48b4-af96-21236286a768" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="Query" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="9025902f-e14a-48b4-af96-21236286a768" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://invoices/get-query-invoices-response.dwl')]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="get:\api\v1\invoices:sf-sys-api-config" doc:id="f552e914-2715-409b-b541-ecec46297771" name="get:\api\v1\invoices:sf-sys-api-config" />
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="741691f5-a447-47a7-8188-48f925589e1e" actual="#[payload]" expected="#[output application/json --- readUrl('classpath://invoices/get-invoices-response.dwl')]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="sf-sys-test-get-invoice-data" doc:id="45c65970-333e-4157-83d7-50f45e5884e1" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mocking-saleforce-query" doc:id="e4fb1277-e71c-4204-a73c-9099db02015f" processor="salesforce:query" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Query" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="9025902f-e14a-48b4-af96-21236286a768" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://invoices/get-query-invoice-response.dwl')]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="bbb987ba-6006-46dc-9a01-e715b8ab0990" cloneOriginalEvent="true" >
+				<munit:attributes value="#[{&#10;	uriParams: {&#10;       invoiceId: 2&#10;          }&#10;}]" />
+			</munit:set-event>
+			<flow-ref doc:name="get:\api\v1\invoices\(invoiceId):sf-sys-api-config" doc:id="65421ba0-1cd9-4078-aa62-d1547c2a2976" name="get:\api\v1\invoices\(invoiceId):sf-sys-api-config" />
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="96b66496-f6fa-4b1c-9382-ca1fedb2d780" actual="#[payload]" expected="#[output application/json --- readUrl('classpath://invoices/get-invoice-response.dwl')]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="sf-sys-test-post-invoice-data" doc:id="60326df9-e926-4b55-9b94-779de80fe1f9" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mocking-saleforce-upsert" doc:id="6905a7d9-9449-482d-8fc6-e46004df8f20" processor="salesforce:create" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Create" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="3eab61bb-9cde-4aa2-8c13-bb8cef8076da" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://invoices/post-invoice-create-response.dwl')]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="d192366a-4158-4770-bdbe-d6c3e54c03d8" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://invoices/post-invoice-request.dwl')]" />
+			</munit:set-event>
+			<flow-ref doc:name="post:\api\v1\invoices:application\json:sf-sys-api-config" doc:id="2d1afecd-90f8-4463-a460-804049c2eeb3" name="post:\api\v1\invoices:application\json:sf-sys-api-config" />
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="77fcc8c5-0a35-4acb-a480-aefad1ac85e2" actual="#[payload]" expected="#[output application/json --- readUrl('classpath://invoices/post-invoice-response.dwl')]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="sf-sys-test-get-customer-byId-data" doc:id="9b027730-3eb6-4153-b35f-89718acd502e" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mocking-saleforce-query" doc:id="66840dfb-7928-4cf9-8bd3-3851ab95f913" processor="salesforce:query" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Query" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="9025902f-e14a-48b4-af96-21236286a768" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://customers/get-query-customer-response.dwl')]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="ee157c0c-064d-4ba7-911b-68eae0bfbab0" cloneOriginalEvent="true" >
+				<munit:attributes value="#[{&#10;	uriParams: {&#10;       customerId: 'a04Qy00000D60vXIAR'&#10;          }&#10;}]" />
+			</munit:set-event>
+			<flow-ref doc:name="get:\api\v1\customers\(customerId):sf-sys-api-config" doc:id="b378db9a-af83-4ca7-84a6-f295975bebbe" name="get:\api\v1\customers\(customerId):sf-sys-api-config" />
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="cf45f982-80ea-4956-b708-48f625424c44" actual="#[payload]" expected="#[output application/json --- readUrl('classpath://customers/get-customer-response.dwl')]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="sf-sys-test-get-order-byId-data" doc:id="d47c3011-f3cf-446d-99ca-c2cd07fbe2a5" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mocking-saleforce-query" doc:id="e4b06a1a-3af3-492f-9160-bb1b70b2c495" processor="salesforce:query" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Query" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="9025902f-e14a-48b4-af96-21236286a768" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://orders/get-query-order-response.dwl')]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="5b7101a6-1f65-4a72-beba-bf410dce2c99" cloneOriginalEvent="true" >
+				<munit:attributes value="#[{&#10;	uriParams: {&#10;       orderId: 'a08Qy00000TqoknIAB'&#10;          }&#10;}]" />
+			</munit:set-event>
+			<flow-ref doc:name="get:\api\v1\orders\(orderId):sf-sys-api-config" doc:id="d67394b3-b6b8-480f-b0f9-51c1fddbb32f" name="get:\api\v1\orders\(orderId):sf-sys-api-config" />
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="f57fd38d-72eb-414b-b8e2-a826bcce1e5e" actual="#[payload]" expected="#[output application/json --- readUrl('classpath://orders/get-order-response.dwl')]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="sf-sys-test-get-invoice-byId-data" doc:id="d298d86d-1fb7-429d-9b70-43d3029b46d9" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mocking-saleforce-query" doc:id="258805d1-b619-44de-aac7-19ee39b7b471" processor="salesforce:query" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Query" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="9025902f-e14a-48b4-af96-21236286a768" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://invoices/get-query-invoice-response.dwl')]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="7acdd476-7b68-4cb5-a107-fd327f8f3463" cloneOriginalEvent="true" >
+				<munit:attributes value="#[{&#10;	uriParams: {&#10;       invoiceId: 'a07Qy00000mzfXUIAY'&#10;          }&#10;}]" />
+			</munit:set-event>
+			<flow-ref doc:name="get:\api\v1\invoices\(invoiceId):sf-sys-api-config" doc:id="3975fda1-09ac-4615-9e79-95bf3af176c9" name="get:\api\v1\invoices\(invoiceId):sf-sys-api-config" />
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="6a0ca299-e144-4508-9c2a-fb7fcbb5d863" actual="#[payload]" expected="#[output application/json --- readUrl('classpath://invoices/get-invoice-response.dwl')]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="sf-sys-test-get-partner-byId-data" doc:id="377bf9b0-b399-4df1-b2c0-b1173c6eaab4" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mocking-saleforce-query" doc:id="434a6f33-d2cc-43a0-9ef3-fd9147b88ee2" processor="salesforce:query" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Query" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="9025902f-e14a-48b4-af96-21236286a768" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://deliveryPartners/get-query-partner-response.dwl')]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="f31dc25c-bd69-40fe-bcf6-64039bae7370" cloneOriginalEvent="true" >
+				<munit:attributes value="#[{&#10;	uriParams: {&#10;       partnerId: 'a05Qy00001CfL13IAF'&#10;          }&#10;}]" />
+			</munit:set-event>
+			<flow-ref doc:name="get:\api\v1\deliveryPartners\(partnerId):sf-sys-api-config" doc:id="129a96b0-cea9-4966-b898-742d19988dcc" name="get:\api\v1\deliveryPartners\(partnerId):sf-sys-api-config" />
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="7d0344a5-6e8e-4bc9-9c06-4c5b7538b0bb" actual="#[payload]" expected="#[output application/json --- readUrl('classpath://deliveryPartners/get-partner-response.dwl')]" />
+		</munit:validation>
+	</munit:test>
+
+
+</mule>

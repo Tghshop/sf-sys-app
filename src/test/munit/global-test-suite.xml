@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="punchh-test-suite.xml" />
+	<munit:test name="sf-sys-api-main-400" doc:id="5031a92b-3ddc-4999-9eb3-de175c4bbad1" description="Test" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mocking APIkit router" doc:id="2e90a478-a79c-4e27-994d-ad8441e0402a" processor="apikit:router" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="sf-sys-api-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="APIKIT:BAD_REQUEST" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<try doc:name="Try" doc:id="34c772c1-d5d1-47eb-8bc7-a54e2990d98a" >
+				<flow-ref doc:name="sf-sys-api-main" doc:id="6c85ecd2-9317-41e3-8810-5ef09c927bbe" name="sf-sys-api-main" />
+				<error-handler >
+					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="e4922f6f-4886-47f8-8ec9-00bf3dd082a8" type="ANY">
+						<logger level="INFO" doc:name="Logger" doc:id="61685d7b-7648-42aa-bdea-550b2a7c6e35" message="#[payload]"/>
+					</on-error-continue>
+				</error-handler>
+			</try>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="8bfef005-9c45-46fa-9bfa-469612ceb07a" actual="#[payload.status]" expected='#["ERROR"]' />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="sf-sys-api-main-404" doc:id="0332d37f-d412-4507-8610-f25fdc033101" description="Test" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mocking APIkit router" doc:id="b64a0fdf-0285-481e-8c5d-12a02884fd79" processor="apikit:router" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="sf-sys-api-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="APIKIT:NOT_FOUND" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<try doc:name="Try" doc:id="ea5aa054-e29d-440e-88d5-79118d0ba0c1" >
+				<flow-ref doc:name="sf-sys-api-main" doc:id="201a4f09-38cd-401c-9324-0ab1e9047335" name="sf-sys-api-main" />
+				<error-handler >
+					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="9d113e7e-3411-4364-8faa-b4f9987c83d4" type="ANY">
+						<logger level="INFO" doc:name="Logger" doc:id="5183ae1b-3c21-4ddf-9134-6f581fb8bd6c" message="#[payload]"/>
+					</on-error-continue>
+				</error-handler>
+			</try>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="e4670de0-6ee4-4101-b6a1-c3dcbed94315" actual="#[payload.status]" expected='#["ERROR"]' />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="sf-sys-api-main-406" doc:id="c1db7202-ca37-4271-8f90-1c60377b5af4" description="Test" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mocking APIkit router" doc:id="5c11ac41-4bab-44e2-b6f5-63756d90a421" processor="apikit:router" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="sf-sys-api-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="APIKIT:NOT_ACCEPTABLE" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<try doc:name="Try" doc:id="28bf0a4b-e6a0-4520-b2ec-3bcd7df4dbde" >
+				<flow-ref doc:name="sf-sys-api-main" doc:id="655a9a75-a33f-4816-a2cc-196ae57f5420" name="sf-sys-api-main" />
+				<error-handler >
+					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="b25a340d-d851-4edf-a05b-029bc50f4555" type="ANY">
+						<logger level="INFO" doc:name="Logger" doc:id="7af6020a-17e5-4eec-a53c-8444b3770e77" message="#[payload]"/>
+					</on-error-continue>
+				</error-handler>
+			</try>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="2aaad00e-c379-4116-8465-a7e982e58134" actual="#[payload.status]" expected='#["ERROR"]' />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="sf-sys-api-main-501" doc:id="00c90631-a72e-45de-aa7e-2cbac43a0f06" description="Test" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mocking APIkit router" doc:id="55795773-6d53-434a-bf98-e005f4d5f42d" processor="apikit:router" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="sf-sys-api-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="APIKIT:NOT_IMPLEMENTED" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<try doc:name="Try" doc:id="31c25c9c-fcd0-4b82-92cc-770799cff0c3" >
+				<flow-ref doc:name="sf-sys-api-main" doc:id="d30a0e4d-c694-4ed1-a119-e534fd2db718" name="sf-sys-api-main" />
+				<error-handler >
+					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="b807d1ec-333a-4dbb-a2e8-a67846067d47" type="ANY">
+						<logger level="INFO" doc:name="Logger" doc:id="a190c2bf-42a1-447c-b37f-e050b4394594" message="#[payload]"/>
+					</on-error-continue>
+				</error-handler>
+			</try>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="2dab13a3-bd90-40c6-b1a7-c4c4c767bc8f" actual="#[payload.status]" expected='#["ERROR"]' />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="sf-sys-api-main-415" doc:id="31f3279d-38c3-497e-9798-5da1a49977c3" description="Test" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mocking APIkit router" doc:id="615cc288-e20e-489f-b843-94931e325f66" processor="apikit:router" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="sf-sys-api-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="APIKIT:UNSUPPORTED_MEDIA_TYPE" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<try doc:name="Try" doc:id="6adc00f1-6bca-4550-a903-6076822a4a59" >
+				<flow-ref doc:name="sf-sys-api-main" doc:id="f109c88c-8020-4581-b605-1007690f8ce3" name="sf-sys-api-main" />
+				<error-handler >
+					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="79f8fc31-794f-44b9-8670-0373408f8339" type="ANY">
+						<logger level="INFO" doc:name="Logger" doc:id="93ceeaff-ad69-4ea9-b849-fd99cb6f59c5" message="#[payload]"/>
+					</on-error-continue>
+				</error-handler>
+			</try>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="1c895631-a79b-41e1-9743-f2f43c8c87be" actual="#[payload.status]" expected='#["ERROR"]' />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="sf-sys-api-main-405" doc:id="98dd5f26-2639-4dd4-9e44-99e7ca8b330e" description="Test" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mocking APIkit router" doc:id="38ba54c1-c24a-4d74-9851-9107eb80d54d" processor="apikit:router" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="sf-sys-api-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="APIKIT:METHOD_NOT_ALLOWED" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<try doc:name="Try" doc:id="dab36edd-4125-4d7a-86e4-1078a077dc83" >
+				<flow-ref doc:name="sf-sys-api-main" doc:id="9a501acf-8fae-46c9-861b-d3e2618827e1" name="sf-sys-api-main" />
+				<error-handler >
+					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="58d8ce2b-3927-4ea1-9bcd-cf16e8b48c5b" type="ANY">
+						<logger level="INFO" doc:name="Logger" doc:id="71c34b30-875b-4eff-b56c-7f26afa5e273" message="#[payload]"/>
+					</on-error-continue>
+				</error-handler>
+			</try>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="e1633616-1a64-4e63-9c70-69c5c1eb0e0d" actual="#[payload.status]" expected='#["ERROR"]' />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="sf-sys-api-global-error-handler-test" doc:id="25251fca-1c83-451a-84eb-64c14720791e" description="Test" >
+		<munit:behavior>
+			<munit-tools:mock-when doc:name="Mocking salesforce-query" doc:id="5424bfca-2c27-4152-9a65-9d8781ac4a43" processor="salesforce:query">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Query" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="9025902f-e14a-48b4-af96-21236286a768" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return>
+					<munit-tools:error typeId="ANY" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<try doc:name="Try" doc:id="07fbc6e0-1660-439c-8f2a-0fdede929d2b" >
+				<flow-ref doc:name="get:\api\v1\inventory:sf-sys-api-config" doc:id="c4883f90-97bf-45ae-b7a3-6b7f1d0f7c90" name="get:\api\v1\inventory:sf-sys-api-config" />
+				<error-handler >
+					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="945d886a-df1b-4f39-8a63-1e7936c2e7b1" type="ANY">
+						<logger level="INFO" doc:name="Logger" doc:id="a19bdfa2-ee00-48e5-ad1f-0d0c9d083d92" message="#[payload]"/>
+					</on-error-continue>
+				</error-handler>
+			</try>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="7fbc17d5-a613-44b5-bb5c-258df59505d8" actual="#[payload.status]" expected='#["ERROR"]' />
+		</munit:validation>
+	</munit:test>
+
+
+</mule>
