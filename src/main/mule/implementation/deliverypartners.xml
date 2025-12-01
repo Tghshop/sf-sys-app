@@ -15,7 +15,7 @@ http://www.mulesoft.org/schema/mule/json-logger http://www.mulesoft.org/schema/m
 output application/java
 ---
 {
-	"query": 'SELECT City__c,contact__c,Email__c,Id,IsActive__c,Last_Assigned_Time__c,Name__c,Partner_Id__c FROM DeliveryPartner__c WHERE IsActive__c=true'
+	"query": 'SELECT City__c,contact__c,Email__c,Id,IsActive__c,Last_Assigned_Time__c,Name__c,Partner_Id__c FROM DeliveryPartner__c'
 }
 ]]></ee:set-variable>
 			</ee:variables>
