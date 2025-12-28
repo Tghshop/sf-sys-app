@@ -35,7 +35,7 @@ output application/json
 					<ee:set-variable variableName="httpStatus" ><![CDATA[500]]></ee:set-variable>
 				</ee:variables>
 			</ee:transform>
-			<json-logger:logger doc:name="global-error-logger" doc:id="972b759b-b74a-4be8-a01f-07f389c3297b" message='#["-----" ++ upper("global-error-logger") ++ "-----"]' tracePoint="EXCEPTION" priority="ERROR" config-ref="json-logger-config">
+			<json-logger:logger doc:name="global-error-logger" doc:id="972b759b-b74a-4be8-a01f-07f389c3297b" message='#["-----" ++ upper("global-errror-logger") ++ "-----"]' tracePoint="EXCEPTION" priority="ERROR" config-ref="json-logger-config">
 				<json-logger:content ><![CDATA[#[output application/json
 ---
 payload]]]></json-logger:content>
