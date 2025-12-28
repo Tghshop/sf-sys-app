@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:json-logger="http://www.mulesoft.org/schema/mule/json-logger" xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
+http://www.mulesoft.org/schema/mule/json-logger http://www.mulesoft.org/schema/mule/json-logger/current/mule-json-logger.xsd">
+	<sub-flow name="get-invoices-data-sub-flow" doc:id="78846d6e-26b2-49cc-82f6-7f85cf47553e">
+		<json-logger:logger doc:name="log-get-invoices-data-sub-flow-start" doc:id="3987a9f5-c2d5-4375-897b-e23483430d54" config-ref="json-logger-config" message='#["----------" ++ upper("log-get-invoices-data-sub-flow-start") ++ "--------------"]'>
+			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
+		</json-logger:logger>
+		<ee:transform doc:name="sf-query" doc:id="52b0f4fb-0d78-4dc0-bbfb-cab449d7457d">
+			<ee:message>
+			</ee:message>
+			<ee:variables>
+				<ee:set-variable variableName="sf"><![CDATA[%dw 2.0
+output application/java
+---
+{
+	"query": 'SELECT customer__c,Discount__c,Invoice_Date__c,Invoice_Id__c,order__c,Tax__c,Total_Price__c, Id FROM invoice__c'
+}]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<flow-ref doc:name="salesfroce-query-sub-flow" doc:id="4e24d3be-fa47-4f9e-baad-4c03e08f30fd" name="salesfroce-query-sub-flow"/>
+		<json-logger:logger doc:name="log-get-invoices-data-sub-flow-end" doc:id="a1d723c9-8071-4fc2-a52f-331bb09d77d0" config-ref="json-logger-config" message='#["----------" ++ upper("log-get-invoices-data-sub-flow-end") ++ "--------------"]' >
+			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
+		</json-logger:logger>
+	
+</sub-flow>
+	<sub-flow name="get-invoice-byid-sub-flow" doc:id="e2db5c42-971e-433d-9184-f898345fd1a4">
+		<json-logger:logger doc:name="log-get-invoice-byid-sub-flow-start" doc:id="a97e0861-d8ad-4271-bfe8-5ec9b3a8097b" config-ref="json-logger-config" message='#["-----------" ++ upper("log-get-invoice-byid-sub-flow-start") ++ "--------------"]'>
+			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
+		</json-logger:logger>
+		<choice doc:name="Choice" doc:id="81caffcd-8c26-42c4-8c90-cf7e3fbd4b98">
+			<when expression='#[(vars.requestParams.uriParams.invoiceId is Number)]'>
+				<ee:transform doc:name="sf-query-invoiceId" doc:id="6f3b0956-0e50-4b08-bbfd-21b6bd4a44fd">
+					<ee:message />
+					<ee:variables>
+						<ee:set-variable variableName="sf"><![CDATA[%dw 2.0
+output application/java
+---
+{
+	"query": "SELECT customer__c,Discount__c,Invoice_Date__c,Invoice_Id__c,order__c,Tax__c,Total_Price__c, Id FROM invoice__c WHERE Invoice_Id__c='" ++ vars.requestParams.uriParams.invoiceId as Number ++ "'"
+}]]></ee:set-variable>
+					</ee:variables>
+				</ee:transform>
+			</when>
+			<otherwise>
+				<ee:transform doc:name="sf-query-Id" doc:id="37e6484e-7e57-40f2-83e2-53a00498aba9">
+					<ee:message />
+					<ee:variables>
+						<ee:set-variable variableName="sf"><![CDATA[%dw 2.0
+output application/java
+---
+{
+	"query": "SELECT customer__c,Discount__c,Invoice_Date__c,Invoice_Id__c,order__c,Tax__c,Total_Price__c, Id FROM invoice__c WHERE Id='" ++ vars.requestParams.uriParams.invoiceId as String default "" ++ "'"
+}]]></ee:set-variable>
+					</ee:variables>
+				</ee:transform>
+			</otherwise>
+		</choice>
+		<flow-ref doc:name="salesfroce-query-sub-flow" doc:id="16baea88-2c99-4163-91fe-8f8c5246006a" name="salesfroce-query-sub-flow"/>
+		<json-logger:logger doc:name="log-get-invoice-byid-sub-flow-end" doc:id="0dcc50d7-5344-4371-b408-92261f2193a2" config-ref="json-logger-config" message='#["-----------" ++ upper("log-get-invoice-byid-sub-flow-end") ++ "--------------"]' >
+			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
+		</json-logger:logger>
+	
+</sub-flow>
+	<sub-flow name="post-invoice-record-sub-flow" doc:id="bd895e3f-7f75-4181-bca7-67e81d66e4ae">
+		<json-logger:logger doc:name="log-post-invoice-record-sub-flow-start" doc:id="18cede46-440a-45f2-b815-f8e583d92f38" config-ref="json-logger-config" message='#["-------------" ++ upper("log-post-invoice-record-sub-flow-start") ++ "---------------"]'>
+			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
+		</json-logger:logger>
+		<ee:transform doc:name="sf-object-objId" doc:id="2ce979ca-c642-470f-a38a-cee1ccbff07c">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+vars.requestParams.payload]]></ee:set-payload>
+			</ee:message>
+			<ee:variables>
+				<ee:set-variable variableName="sf"><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"object": 'invoice__c',
+	"object_id": 'Invoice_Id__c'
+}]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<flow-ref doc:name="invoice-salesforce-insert-sub-flow" doc:id="12ee526c-6fe5-4429-86d6-9ed839ba465a" name="invoice-salesforce-insert-sub-flow"/>
+		<json-logger:logger doc:name="log-post-invoice-record-sub-flow-end" doc:id="aaef1159-ac17-467e-b588-c31267b3de53" config-ref="json-logger-config" message='#["-------------" ++ upper("log-post-invoice-record-sub-flow-end") ++ "---------------"]' >
+			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
+		</json-logger:logger>
+	
+</sub-flow>
+</mule>

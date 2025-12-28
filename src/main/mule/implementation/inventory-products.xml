@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:json-logger="http://www.mulesoft.org/schema/mule/json-logger" xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
+http://www.mulesoft.org/schema/mule/json-logger http://www.mulesoft.org/schema/mule/json-logger/current/mule-json-logger.xsd">
+	<sub-flow name="get-inventory-products-data-sub-flow" doc:id="791d3313-d307-45d3-99a9-d3a20f208365">
+		<json-logger:logger doc:name="log-get-inventory-products-data-sub-flow-start" doc:id="095b29ba-478b-4abc-9d8f-1503534c3f6d" config-ref="json-logger-config" message='#["-------------" ++ upper("log-get-inventory-products-data-sub-flow-start") ++ "------------"]'>
+			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
+		</json-logger:logger>
+		<ee:transform doc:name="sf-query" doc:id="638320de-9c2f-4cef-a1a0-39f22de36dca">
+			<ee:message>
+			</ee:message>
+			<ee:variables>
+				<ee:set-variable variableName="sf"><![CDATA[%dw 2.0
+output application/java
+---
+{
+	"query": 'SELECT Category__c,Last_Updated__c,price__c,Product_Id__c,Product_Name__c,Stock_Available__c, IsAvailable__c, Id FROM Inventory__c WHERE IsAvailable__c=true'
+}]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<flow-ref doc:name="salesfroce-query-sub-flow" doc:id="1896189f-a294-436f-95c7-b2043d1586c3" name="salesfroce-query-sub-flow"/>
+		<json-logger:logger doc:name="log-get-inventory-products-data-sub-flow-end" doc:id="7fe1859e-d2ff-442a-bb0f-b69c046776fb" config-ref="json-logger-config" message='#["-------------" ++ upper("log-get-inventory-products-data-sub-flow-end") ++ "------------"]' >
+			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
+		</json-logger:logger>
+	
+</sub-flow>
+	<sub-flow name="get-inventory-productbyid-sub-flow" doc:id="be5e0e0a-c46a-4ec2-9ec7-77777af1c665">
+		<json-logger:logger doc:name="log-get-inventory-productbyid-sub-flow-start" doc:id="de9ef54b-e55a-4a36-9695-242665a9a211" config-ref="json-logger-config" message='#["------------" ++ upper("log-get-inventory-productbyid-sub-flow-start") ++ "--------------"]'>
+			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
+		</json-logger:logger>
+		<ee:transform doc:name="sf-query-productId" doc:id="0b49e065-1af1-42d2-a2a1-e179261448af">
+			<ee:message>
+			</ee:message>
+			<ee:variables>
+				<ee:set-variable variableName="sf"><![CDATA[%dw 2.0
+output application/java
+---
+{
+	"query": "SELECT Category__c,Last_Updated__c,price__c,Product_Id__c,Product_Name__c,Stock_Available__c, Id FROM Inventory__c WHERE Product_Id__c='" ++ vars.requestParams.uriParams.productId as String default "" ++ "'"
+}]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<flow-ref doc:name="salesfroce-query-sub-flow" doc:id="9bb54340-0ea5-4fcb-8564-ef292b79f956" name="salesfroce-query-sub-flow"/>
+		<json-logger:logger doc:name="log-get-inventory-productbyid-sub-flow-end" doc:id="0165ddac-bc8b-4a9f-abf3-cee73d9fa875" config-ref="json-logger-config" message='#["------------" ++ upper("log-get-inventory-productbyid-sub-flow-end") ++ "--------------"]' >
+			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
+		</json-logger:logger>
+	
+</sub-flow>
+	<sub-flow name="post-inventory-product-record-sub-flow" doc:id="6b70d7ae-0cb8-4c00-a451-750e41ef84ab">
+		<json-logger:logger doc:name="log-post-inventory-product-record-sub-flow-start" doc:id="31d3e8d5-9f57-440b-b481-cbaa1a12e590" config-ref="json-logger-config" message='#["-----------" ++ upper("log-post-inventory-product-record-sub-flow-start") ++ "-----------"]'>
+			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
+		</json-logger:logger>
+		<ee:transform doc:name="sf-object-objId" doc:id="8c1f5258-9b58-4f09-be42-a5629927e7e0">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+vars.requestParams.payload]]></ee:set-payload>
+			</ee:message>
+			<ee:variables>
+				<ee:set-variable variableName="sf"><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"object": 'Inventory__c',
+	"object_id": 'Product_Id__c'
+}]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<flow-ref doc:name="salesforce-upsert-sub-flow" doc:id="41871c5e-310c-45bd-a1d5-e5ff59a44e04" name="salesforce-upsert-sub-flow"/>
+		<json-logger:logger doc:name="log-post-inventory-product-record-sub-flow-end" doc:id="5aaf0e63-22e1-4087-9027-c5486d00c41e" config-ref="json-logger-config" message='#["-----------" ++ upper("log-post-inventory-product-record-sub-flow-end") ++ "-----------"]' >
+			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
+		</json-logger:logger>
+	
+</sub-flow>
+	<sub-flow name="put-inventory-product-details-sub-flow" doc:id="9ff60b63-27fd-433b-83aa-46d86e4cf134">
+		<json-logger:logger doc:name="log-put-inventory-product-details-sub-flow-start" doc:id="bb74b5ab-2c6b-4a4f-b0e6-cecc4213519a" config-ref="json-logger-config" message='#["-------------" ++ upper("log-put-inventory-product-details-sub-flow-start") ++ "-------------"]'>
+			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
+		</json-logger:logger>
+		<ee:transform doc:name="sf-object-objId" doc:id="43e62af1-7124-4fc6-ab53-3839e50a1d02">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+vars.requestParams.payload]]></ee:set-payload>
+			</ee:message>
+			<ee:variables>
+				<ee:set-variable variableName="sf"><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"object": 'Inventory__c',
+	"object_id": 'Product_Id__c'
+}]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<flow-ref doc:name="salesforce-upsert-sub-flow" doc:id="b099daab-5356-4d2f-b398-414ca54c3fe4" name="salesforce-upsert-sub-flow"/>
+		<json-logger:logger doc:name="log-put-inventory-product-details-sub-flow-end" doc:id="b4f0d8f2-44d1-4f0e-b583-de621a99db19" config-ref="json-logger-config" message='#["-------------" ++ upper("log-put-inventory-product-details-sub-flow-end") ++ "-------------"]' >
+			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
+		</json-logger:logger>
+	
+</sub-flow>
+	<sub-flow name="delete-inventory-product-sub-flow" doc:id="326bfb8c-4a4b-4a86-9ef3-7a4b9f2dd836">
+		<json-logger:logger doc:name="log-delete-inventory-product-sub-flow-start" doc:id="b15348b8-7d3c-4af5-91cf-0f0f0b5f93fe" config-ref="json-logger-config" message='#["------------" ++ upper("log-delete-inventory-product-sub-flow-start") ++ "--------------"]'>
+			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
+		</json-logger:logger>
+		<flow-ref doc:name="get-inventory-productbyid-sub-flow" doc:id="59ee006d-517d-4b13-9d58-e46b58126bf1" name="get-inventory-productbyid-sub-flow" target="product"/>
+		<ee:transform doc:name="update-flag-payload" doc:id="a2d689cd-4293-47b1-a96c-9a7b7705e775">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+[vars.product[0] -"IsActive__c" ++ {"IsActive__c": false}] ]]></ee:set-payload>
+			</ee:message>
+			<ee:variables>
+				<ee:set-variable variableName="sf"><![CDATA[%dw 2.0
+output application/java
+---
+{
+	"query": 'SELECT Address__c,City__c,contact__c,Customer_Id__c,Email__c,Name__c,Password__c,Pincode__c,Registration_Date__c,State__c FROM customer__c'
+}]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<flow-ref doc:name="salesforce-upsert-sub-flow" doc:id="226d0a01-721f-4faf-a80c-2f23c14db09e" name="salesforce-upsert-sub-flow"/>
+		<json-logger:logger doc:name="log-delete-inventory-product-sub-flow-end" doc:id="f80d010b-6103-4fb1-9d49-96230019ba5e" config-ref="json-logger-config" message='#["------------" ++ upper("log-delete-inventory-product-sub-flow-end") ++ "--------------"]' >
+			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
+		</json-logger:logger>
+	
+</sub-flow>
+</mule>

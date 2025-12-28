@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:json-logger="http://www.mulesoft.org/schema/mule/json-logger" xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
+http://www.mulesoft.org/schema/mule/json-logger http://www.mulesoft.org/schema/mule/json-logger/current/mule-json-logger.xsd">
+	<sub-flow name="get-orders-data-sub-flow" doc:id="c6d40965-d7b7-4611-ad8c-1f171a50560f">
+		<json-logger:logger doc:name="log-get-orders-data-sub-flow-start" doc:id="6b501b7b-81a2-419d-9e4e-6ad516bb2c33" config-ref="json-logger-config" message='#["-------------" ++ upper("log-get-orders-data-sub-flow-start") ++ "---------------"]'>
+			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
+		</json-logger:logger>
+		<ee:transform doc:name="sf-query" doc:id="f7072a08-531b-4c30-b831-d15d876a9aa6">
+			<ee:message>
+			</ee:message>
+			<ee:variables>
+				<ee:set-variable variableName="sf"><![CDATA[%dw 2.0
+output application/java
+---
+{
+	"query": 'SELECT Customer__c,DeliveryPartner__c,Delivery_Address__c,Delivery_Date__c,Inventory__c,Invoice__c,Order_Date__c,Order_Id__c,Order_Status__c,Quantity__c,Total_Price__c,Transit__c, IsCancelled__c, Id, warehouse_city__c FROM order__c WHERE IsCancelled__c=false'
+}]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<flow-ref doc:name="salesfroce-query-sub-flow" doc:id="c4267332-0627-4860-b101-8f981f03f972" name="salesfroce-query-sub-flow"/>
+		<json-logger:logger doc:name="log-get-orders-data-sub-flow-end" doc:id="39d1c99c-e87b-4840-92e7-1861a93a5127" config-ref="json-logger-config" message='#["-------------" ++ upper("log-get-orders-data-sub-flow-end") ++ "---------------"]' >
+			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
+		</json-logger:logger>
+	
+</sub-flow>
+	<sub-flow name="get-order-byid-sub-flow" doc:id="330b4392-3cb0-4c9d-9025-1d1bcc217ae7">
+		<json-logger:logger doc:name="log-get-order-byid-sub-flow-start" doc:id="8e0ca7a7-8978-4e0b-b38f-62752ffef8c4" config-ref="json-logger-config" message='#["--------------" ++ upper("log-get-order-byid-sub-flow-start") ++ "----------------"]'>
+			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
+		</json-logger:logger>
+		<choice doc:name="Choice" doc:id="fa0ab419-6e1b-4307-ba74-a53f2b77db3d">
+			<when expression='#[vars.requestParams.uriParams.orderId contains "ORD"]'>
+				<ee:transform doc:name="sf-query-orderId" doc:id="0017abda-6de3-405c-a4d7-f1e36ee1581b">
+					<ee:message>
+					</ee:message>
+					<ee:variables>
+						<ee:set-variable variableName="sf"><![CDATA[%dw 2.0
+output application/java
+---
+{
+	"query": "SELECT Customer__c,DeliveryPartner__c,Delivery_Address__c,Delivery_Date__c,Inventory__c,Invoice__c,Order_Date__c,Order_Id__c,Order_Status__c,Quantity__c,Total_Price__c,Transit__c, Id, warehouse_city__c FROM order__c WHERE Order_Id__c='" ++ vars.requestParams.uriParams.orderId as String default "" ++ "'"
+}]]></ee:set-variable>
+					</ee:variables>
+				</ee:transform>
+			</when>
+			<otherwise>
+				<ee:transform doc:name="sf-query-Id" doc:id="9ec73c6a-6583-40d0-bb7b-739a4c4874f8">
+					<ee:message>
+					</ee:message>
+					<ee:variables>
+						<ee:set-variable variableName="sf"><![CDATA[%dw 2.0
+output application/java
+---
+{
+	"query": "SELECT Customer__c,DeliveryPartner__c,Delivery_Address__c,Delivery_Date__c,Inventory__c,Invoice__c,Order_Date__c,Order_Id__c,Order_Status__c,Quantity__c,Total_Price__c,Transit__c, Id, warehouse_city__c FROM order__c WHERE Id='" ++ vars.requestParams.uriParams.orderId as String default "" ++ "'"
+}]]></ee:set-variable>
+					</ee:variables>
+				</ee:transform>
+			</otherwise>
+		</choice>
+		<flow-ref doc:name="salesfroce-query-sub-flow" doc:id="b04680e5-e402-4107-8269-04c7d9ae352c" name="salesfroce-query-sub-flow"/>
+		<json-logger:logger doc:name="log-get-order-byid-sub-flow-end" doc:id="dc46e480-cc97-4b37-83f8-430043a7af43" config-ref="json-logger-config" message='#["--------------" ++ upper("log-get-order-byid-sub-flow-end") ++ "----------------"]' >
+			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
+		</json-logger:logger>
+	
+</sub-flow>
+	<sub-flow name="post-order-record-sub-flow" doc:id="7ddd9ad2-9e48-4a0f-927c-e2d04d4af3b2">
+		<json-logger:logger doc:name="log-post-order-record-sub-flow-start" doc:id="a218fab2-b9d5-448e-8b64-b9c6bb1da739" config-ref="json-logger-config" message='#["----------------" ++ upper("log-post-order-record-sub-flow-start") ++ "-----------------"]'>
+			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
+		</json-logger:logger>
+		<ee:transform doc:name="sf-object-objId" doc:id="34900004-3442-49b9-8d34-342c233b2427">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+vars.requestParams.payload]]></ee:set-payload>
+			</ee:message>
+			<ee:variables>
+				<ee:set-variable variableName="sf"><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"object": 'order__c',
+	"object_id": 'Order_Id__c'
+}]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<flow-ref doc:name="salesforce-upsert-sub-flow" doc:id="5c4885f7-76d1-4a43-9352-5331a1059284" name="salesforce-upsert-sub-flow"/>
+		<json-logger:logger doc:name="log-post-order-record-sub-flow-end" doc:id="212f9748-21af-4552-ae3f-94c06c5da7ef" config-ref="json-logger-config" message='#["----------------" ++ upper("post-order-record-sub-flow-end") ++ "-----------------"]' >
+			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
+		</json-logger:logger>
+	
+</sub-flow>
+	<sub-flow name="patch-order-details-sub-flow" doc:id="2f878b6f-8d77-46ed-a0f6-71f179486ca3">
+		<json-logger:logger doc:name="log-patch-order-details-sub-flow-start" doc:id="cf4cf6fe-285f-4537-81af-1050121b0449" config-ref="json-logger-config" message='#["-------------" ++ upper("log-patch-order-details-sub-flow-start") ++ "---------------"]'>
+			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
+		</json-logger:logger>
+		<ee:transform doc:name="Transform Message" doc:id="6b7836c8-7402-439f-9ddc-79382c77382f">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+vars.requestParams.payload]]></ee:set-payload>
+			</ee:message>
+			<ee:variables>
+				<ee:set-variable variableName="sf"><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"object":'order__c',
+	"object_id": 'Order_Id__c'
+}]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<flow-ref doc:name="salesforce-upsert-sub-flow" doc:id="5bc20241-39db-4bd2-b920-3f67d2dc96ec" name="salesforce-upsert-sub-flow"/>
+		<json-logger:logger doc:name="log-patch-order-details-sub-flow-end" doc:id="f7ed0e88-697b-4cd3-af0c-8568e7ef127a" config-ref="json-logger-config" message='#["-------------" ++ upper("log-patch-order-details-sub-flow-end") ++ "---------------"]' >
+			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
+		</json-logger:logger>
+	
+</sub-flow>
+	<sub-flow name="delete-order-sub-flow" doc:id="d8688d58-0e03-4635-8c49-101a3c1966ba" >
+		<json-logger:logger doc:name="log-delete-order-sub-flow-start" doc:id="b609e19f-99c5-46fc-ac75-26295fac0948" config-ref="json-logger-config" message='#["-------------" ++ upper("log-delete-order-sub-flow-start") ++ "---------------"]' >
+			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
+		</json-logger:logger>
+		<flow-ref doc:name="get-order-byid-sub-flow" doc:id="b810935a-9357-4ab1-8b32-ee1caec6f20b" name="get-order-byid-sub-flow" target="order"/>
+		<ee:transform doc:name="update-flag-payload" doc:id="6d3d221f-0707-46de-91a2-a9b69a07b13e" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+[vars.order[0] -"IsCancelled__c" ++ {"IsCancelled__c": true}] ]]></ee:set-payload>
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="sf" ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"object":'order__c',
+	"object_id": 'Order_Id__c'
+}]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<flow-ref doc:name="salesforce-upsert-sub-flow" doc:id="59a2340a-c422-4106-88cb-d683a3474643" name="salesforce-upsert-sub-flow" />
+		<json-logger:logger doc:name="log-delete-order-sub-flow-end" doc:id="830b32a0-e1e8-4840-99df-d06562bd8404" config-ref="json-logger-config" message='#["-------------" ++ upper("log-delete-order-sub-flow-end") ++ "---------------"]' >
+			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
+		</json-logger:logger>
+	</sub-flow>
+
+</mule>
